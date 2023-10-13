@@ -20,5 +20,6 @@ from BodegaApp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', login),
+    path('', login, name='login'),
+    path('inicio/', inicio, name='home')
 ]
