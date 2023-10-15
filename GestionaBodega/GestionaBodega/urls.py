@@ -21,5 +21,15 @@ from BodegaApp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', login, name='login'),
-    path('inicio/', inicio, name='home')
+    path('inicio/', inicio, name='home'),
+    path('menuAdmin/',menuAdm,name='MENUADMIN'),
+    path('adminPerfiles/',admPerfiles,name='ADMPERFILES'),
+    path('adminArea/',admArea,name='ADMAREA'),
+    path('adminBodega/',admBodega,name='ADMBODEGA'),
+    path('adminCliente/',admCliente,name='ADMCLIENTE'),
+    path('adminColaborador/',admColaborador,name='ADMCOLABORADOR'),
+    path('adminEmpresa/',admEmpresa,name='ADMEMPRESA'),
+    path('adminPlan/',admPlan,name='ADMPLAN'),
+    path('adminProducto/',admProducto,name='ADMPRODUCTO'),
+    path('adminSucursal/',admSucursal,name='ADMSUCRUSAL'),
 ]

@@ -8,7 +8,7 @@
     <!--Icono de Bodegón-->
     <link rel="icon" href="/static/img/logo.png"/>
     <!--CSS-->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link type='text/css' rel="stylesheet" href="{% static 'css/style.css' %}"/>
     <!--Para título de la página-->
     <title>{% block titulo %}{% endblock %}</title>
     <!--Bootstrap 5-->
@@ -16,13 +16,43 @@
 </head>
 <body>
     {% block nav %}
-        <nav class="navbar bg-body-tertiary">
-            <div class="container">
-            <a class="navbar-brand" href="#">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
                 <img src="/static/img/logo.png" alt="" width="58" height="50">
-            </a>
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item text-center" style="margin-left: 10px;">
+                    <a class="nav-link active" aria-current="page" href="#"><img src="/static/img/inicio.png" alt="Inicio" width="60" height="50"><br>Inicio</a>
+                  </li>
+                  <li class="nav-item text-center" style="margin-left: 30px;">
+                    <a class="nav-link" href="#"><img src="/static/img/producto.png" alt="" width="60" height="50"><br>Productos</a>
+                  </li>
+                  <li class="nav-item text-center" style="margin-left: 30px;">
+                    <a class="nav-link" href=""><img src="/static/img/plan.png" alt="" width="55" height="50"><br>Planes</a>
+                  </li>
+                  <li class="nav-item text-center" style="margin-left: 30px;">
+                    <a class="nav-link" href=""><img src="/static/img/despacho.png" alt="" width="70" height="50"><br>Despacho</a>
+                  </li>
+                  <li class="nav-item text-center" style="margin-left: 30px;">
+                    <a class="nav-link" href=""><img src="/static/img/sucursal.png" alt="" width="55" height="50"><br>Registrar Sucursal</a>
+                  </li>
+                  </ul>
+                  <ul class="navbar-nav me-2 mb-2 mb-lg-0">
+                    <li class="nav-item text-center mt-2" style="margin-left: 30px;">
+                        <a class="nav-link" href=""><img src="/static/img/userPerfil.png" alt="" width="30" height="30" class="me-2">Perfil</a>
+                    </li>
+                    <li class="nav-item text-center" style="margin-left: 30px;">
+                        <a class="nav-link" href=""><img src="/static/img/logout.png" alt="" width="50" height="50"><button class="btn btn-info">Cerrar Sesión</button></a>
+                    </li>
+                  </ul>
+              </div>
             </div>
-        </nav>
+          </nav>
     {% endblock %}
 
     <!--Contenido de la página-->
