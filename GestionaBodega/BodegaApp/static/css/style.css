@@ -5,3 +5,7 @@ body{
     background-color: rgb(100, 100, 100);
     background-blend-mode: soft-light;
 }
+
+.colorForm{
+    background: #A59D9D;
+}

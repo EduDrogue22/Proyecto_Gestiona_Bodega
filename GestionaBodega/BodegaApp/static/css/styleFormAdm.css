@@ -1,0 +1,35 @@
+body {
+    background-image: url('/static/img/fondosAdmin.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: rgb(100, 100, 100);
+  }
+  
+
+
+form{
+    padding: 70px;
+}
+
+input {
+padding: 10px;
+}
+
+.form-control {
+margin-top: 5px;
+margin-bottom: 5%;
+}
+
+.form-check-input {
+appearance: none;
+width: 20px;
+height: 20px;
+border-radius: 100%;;
+border: 1px solid #ccc;
+cursor: pointer;
+}
+
+.form-select {
+margin-top: 7px;
+margin-bottom: 5%;
+}

@@ -126,6 +126,7 @@ class Producto(models.Model):
     stock = models.IntegerField()
     foto_prod = models.BinaryField()
     id_area = models.ForeignKey(AreaBodega, models.DO_NOTHING, db_column='id_area')
+    rut = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='rut')
 
     class Meta:
         db_table = 'producto'
@@ -178,7 +179,7 @@ class TipoUsuario(models.Model):
 
 class Usuario(models.Model):
     rut = models.IntegerField(primary_key=True)
-    primer_nombe = models.CharField(max_length=50)
+    primer_nombre = models.CharField(max_length=50)
     segundo_nombre = models.CharField(max_length=50, blank=True, null=True)
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50)
