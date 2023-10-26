@@ -45,5 +45,6 @@ urlpatterns = [
     path('modificarPerfil/',modPerfil,name='MODPERFIL'),
     path('modificarEmpresa/',modEmpresa,name='MODEMPRESA'),
     path('modificarSucursal/',modSucursal,name='MODSUCRUSAL'),
-    path('agregar_producto/',agregar_producto,name='AGRPROD'),
+    #Este path para las sucursales.
+    path('ajax/cargar_sucursales/', cargar_sucursales, name='cargar_sucursales'),
 ]
