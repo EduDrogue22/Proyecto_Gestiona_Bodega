@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from django.http import JsonResponse
-from datetime import date
+from datetime import datetime, date
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.db import DatabaseError
+from django.contrib.auth import authenticate, login, logout
 from .models import *
-import time
 
 # Importacion libreria oracle
 import cx_Oracle
@@ -18,46 +18,114 @@ def create_oracle_connection():
     connection = cx_Oracle.connect(user="bodegon", password="bodegon", dsn = dsn_str)
     return connection
 
-def login(request):
-    return render(request, 'web/login.html')
+def login_view(request):
+    error = False
+    exito = False
+    message = ""
+
+    if request.method == 'POST':
+
+        #form = EmailAuthenticationForm(request, request.POST)
+        email = request.POST.get('username')
+        password = request.POST.get('password')
+
+        #autenticacion = authenticate(request, email = email, password = password)
+
+        try:
+            usu = Usuario.objects.get(correo = email, contrasena = password)
+
+            request.session['rut'] = usu.pk
+            exito = True
+            message = "Bienvenido."
+            return redirect('home')
+            
+        except Usuario.DoesNotExist:
+            use = authenticate(request, username = email, password = password)
+            if use is not None:
+                login(request, use)
+                exito = True
+                message = "Bienvenido."
+                return redirect('home')
+            else:
+                error = True
+                message = "Usuario o Contraseña no válidos."
+    return render(request, 'web/login.html', {'error': error, 'exito': exito, 'message': message})
 
 def inicio(request):
     return render(request, 'web/home.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 
 def registrarse(request):
     empresa = Empresa.objects.all()
     sucursal = Sucursal.objects.all()
     error = False
     exito = False
-    exito_message = ""
-    error_message = ""
+    message = ""
 
     try:
         if request.method == 'POST':
-            primer_nombre = request.POST.get('txtPrimerNombre')
+            primer_nombre = request.POST.get('txtPrimerNombre').strip()
             segundo_nombre = request.POST.get('txtSegundoNombre')
-            apellido_paterno = request.POST.get('txtApellidoPaterno')
-            apellido_materno = request.POST.get('txtApellidoMaterno')
+            apellido_paterno = request.POST.get('txtApellidoPaterno').strip()
+            apellido_materno = request.POST.get('txtApellidoMaterno').strip()
             rut = request.POST.get('numRut')
-            correo = request.POST.get('txtCorreo')
-            nacimiento = request.POST.get('dateFechaNacimiento')
+            correo = request.POST.get('txtCorreo').strip()
+            nacimiento = datetime.strptime(request.POST.get('dateFechaNacimiento'), '%Y-%m-%d').date()
             id_sucursal = request.POST.get('sucursal')
-            contrasena = request.POST.get('txtContrasena')
-            rept_contrasena = request.POST.get('txtReptContrasena')
-            direccion = request.POST.get('txtDireccion')
+            contrasena = request.POST.get('txtContrasena').strip()
+            rept_contrasena = request.POST.get('txtReptContrasena').strip()
+            direccion = request.POST.get('txtDireccion').strip()
             id_bodega = 1
             id_usuario = 1
 
+            hoy = date.today()
+
+            edad = hoy.year - nacimiento.year - ((hoy.month, hoy.day) < (nacimiento.month, nacimiento.day))
+
             if contrasena != rept_contrasena:
                 error = True
-                error_message = "La contraseñas no coinciden."
+                message = "La contraseñas no coinciden."
             
-            if len(rut) < 9:
+            elif len(rut) < 9:
                 error = True
-                error_message = "El rut es corto."
+                message = "El rut es corto."
             
+            elif edad < 18:
+                error = True
+                message = "Debe tener al menos 18 años para registrarse."
+            
+            elif not primer_nombre:
+                error = True
+                message = "El campo Primer Nombre no puede estar en blanco."
+
+            elif not apellido_paterno:
+                error = True
+                message = "El campo Apellido Paterno no puede estar en blanco."
+            
+            elif not apellido_materno:
+                error = True
+                message = "El campo Apellido Materno no puede estar en blanco."
+
+            elif not correo:
+                error = True
+                message = "El campo Correo no puede estar en blanco."
+            
+            elif not contrasena:
+                error = True
+                message = "El campo Contraseña no puede estar en blanco."
+            
+            elif not rept_contrasena:
+                error = True
+                message = "El campo Repetir Contraseña no puede estar en blanco."
+
+            elif not direccion:
+                error = True
+                message = "El campo Direccion no puede estar en blanco."
+
             else:
-                            
                 contrasena_encriptada = make_password(contrasena)
 
                 oracle_connection = create_oracle_connection()
@@ -67,11 +135,11 @@ def registrarse(request):
 
                 oracle_connection.commit()
                 exito = True
-                exito_message = "Usuario registrado con éxito, favor de esperar para comprobar sus datos."
+                message = "Usuario registrado con éxito, favor de esperar para comprobar sus datos."
     except DatabaseError as e:
         error = True
-        error_message = "Error al agregar usuario."
-    return render(request, 'web/registrarse.html', {'empresas': empresa, 'sucursales': sucursal, 'error': error, 'error_mensaje': error_message, 'exito': exito, 'exito_message': exito_message})
+        message = "Error al agregar usuario."
+    return render(request, 'web/registrarse.html', {'empresas': empresa, 'sucursales': sucursal, 'error': error, 'exito': exito, 'message': message})
 
 
 def cargar_sucursales(request):

@@ -184,7 +184,7 @@ class Usuario(models.Model):
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50)
     correo = models.CharField(max_length=100)
-    contrasena = models.CharField(max_length=50)
+    contrasena = models.CharField(max_length=128)
     id_bodega = models.ForeignKey(Bodega, models.DO_NOTHING, db_column='id_bodega')
     id_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_usuario')
 

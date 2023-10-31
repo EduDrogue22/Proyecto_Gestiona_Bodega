@@ -9,19 +9,6 @@ Registrarse
 {% endblock %}
 
 {% block content %}
-
-{% if error %}
-    <script>
-        error("{{ error_message }}")
-    </script>
-{% endif %}
-
-{% if exito %}
-    <script>
-        exito("{{ exito_message }}")
-    </script>
-{% endif %}
-
 <h2 class="text-center text-white mt-2">Gestiona Bodega</h2>
 <div class="container w-50 mt-5 mb-5 rounded center" style="background-color: silver;">
     <div class="row align-items-stretch">
@@ -78,6 +65,18 @@ Registrarse
         </form>
     </div>
 </div>
+
+{% if error %}
+    <script>
+        error("{{ message }}")
+    </script>
+{% endif %}
+
+{% if exito %}
+    <script>
+        exito("{{ message }}")
+    </script>
+{% endif %}
 
 <script>
     $(document).ready(function() {
