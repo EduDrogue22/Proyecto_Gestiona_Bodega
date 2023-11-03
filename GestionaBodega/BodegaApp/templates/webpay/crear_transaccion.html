@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Transacción</title>
+</head>
+<body>
+    <h1>Crear Transacción con Webpay Plus</h1>
+    <form method="post" action="{% url 'crear_transaccion' %}">
+        <input type="hidden" name="token_ws" value="{{ token }}" />
+        {% csrf_token %}
+        <p>Buy Order: {{ buy_order }}</p>
+        <p>Session ID: {{ session_id }}</p>
+        <p>Amount: {{ amount }}</p>
+        <input type="submit" value="Ir a pagar" />
+    </form>
+</body>
+</html>

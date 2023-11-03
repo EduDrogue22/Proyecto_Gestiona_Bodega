@@ -1,0 +1,50 @@
+{% extends 'web/base.html' %}
+
+{% block titulo %}
+Producto
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-image: url('/static/img/fondoAdmin.png');
+        background-size: 100% 100%;
+        background-attachment: fixed;
+        background-color: rgb(29, 28, 28);
+        background-blend-mode: soft-light;
+    }
+</style>
+
+<h1 class="text-center text-light mt-5 me-5 text-decoration-underline">Planes</h1>
+
+<div class="container">
+    
+    <div class="row row-cols-3 mt-3">
+        {% for plan in planes %}
+        <div class="col-12 col-md-4 d-flex mt-4" >
+            <div class="col-12 col-md-10 border border-2 border-info" style="background-color: #D9D9D9;">
+                <p class="text-center text-light mt-3 fs-4 text-dark">{{plan.id_plan.nombre_plan}}</p>
+                <div class="ms-3 col-11 col-md-11 border border-dark border-2" style="background-color: #FEB75E; height: 400px;">
+                    <p class="text-center text-light mt-2 fs-4 text-dark">{{plan.id_plan.valor_plan}}</p>
+                    <p class="text-start text-light ms-1 mt-5 fs-4 text-dark">Anaqueles: {{plan.id_plan.cant_anaquel_plan}}</p>
+                    <p class="text-start text-light ms-1 mt-2 mb-5 fs-5 text-dark">Capacidad Anaquel: {{plan.id_plan.capacidad_anaquel}} productos</p>
+                    <p class="text-start text-light ms-1 mt-2 mb-5 fs-5 text-dark">Bodega: {{plan.id_bodega.nombre_bodega}}</p>
+                </div>
+                
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-lg text-black border-dark mb-3 border-2 rounded-0" style="background-color: #2C9DCD;">
+                        <img src="/static/img/plan.png" alt="Icono" style="width: 30px; height: 30px; margin-right: 5px;"> 
+                        Contratar
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+
+
+
+{% endblock %}

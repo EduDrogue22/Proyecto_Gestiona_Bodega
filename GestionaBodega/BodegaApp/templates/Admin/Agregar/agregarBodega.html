@@ -8,31 +8,37 @@
 <div style="text-align: center; color: aliceblue;">
     <h1>Agregar Bodega</h1>
 </div>
-<section class="d-flex justify-content-center "  id="formulario">
-        <div class="card col-sm-6 p-3" style="background-color: gray;">
-            <div class="mb-2">
-                <form action="#" method="POST" id="form">
-                    {% csrf_token %}
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="nombre_bod" id="nombre_bod" placeholder="Ingrese nombre bodega" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="direccion_bod" id="direccion_bod" placeholder="Ingrese dirección" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Tipo Bodega</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+<section class="d-flex justify-content-center " id="formulario">
+    <div class="card col-sm-6 p-3" style="background-color: gray;">
+        <div class="mb-2">
+            <form action="{% url 'AGREBODEGA' %}" method="POST" id="form" onsubmit="return validarBodega(event) ">
+                {% csrf_token %}
+                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                <div class="mb-2 form-input">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="nombre_bod" id="nombre_bod" placeholder="Ingrese nombre bodega" autofocus>
+                </div>
+                <div class="mb-2 form-input">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="direccion_bod" id="direccion_bod" placeholder="Ingrese dirección" autofocus>
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectTpBodega">Selecciona un tipo de bodega:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectTpBodega"
+                        name="selectTpBodega">
+                        {% for tipo_bodega in tipoBodega %}
+                        <option value="{{ tipo_bodega.id_tp_bodega }}">{{ tipo_bodega.nom_tipo_bodega }}</option>
+                        {% endfor %}
                     </select>
-                     </div>
-                  
-                    <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
-                        <a href="{% url 'ADMBODEGA' %}"><button class="btn btn-danger btn-lg me-md-5" type="button">Cancelar</button></a>
-                        <button class="btn btn-success btn-lg" type="button" >Confirmar</button>
-                    </div>
-            </div>
+                </div>
+
+                <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
+                    <a href="{% url 'ADMBODEGA' %}"><button class="btn btn-danger btn-lg me-md-5"
+                            type="button">Cancelar</button></a>
+                    <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
+                </div>
             </form>
-    </section>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -4,6 +4,123 @@
 
 {% endblock %}
 {% block content %}
- <a class="nav-link" href="{% url 'ADMPERFILES' %}">Admninistrar perfiles ejemplo</a>
- 
+ <div class="album py-5 ">
+    <div class="container">
+      <div style="text-align: center; color: aliceblue;">
+        <h1>Menú Administración</h1>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+           <img src="/static/img/imgAdmin/perfil.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar Perfiles</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMPERFILES' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="col">
+          <div class="card shadow-sm">
+          <img src="/static/img/imgAdmin/producto.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar productos</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMPRODUCTO' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/empresas.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar empresas</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMEMPRESA' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+
+       <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/sucursal.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar sucursal</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMSUCRUSAL' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+       <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/cliente.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar cliente</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMCLIENTE' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/colaborador.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar colaborador</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMCOLABORADOR' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+
+       <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/plan.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar plan</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMPLAN' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+       <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/bodega.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar bodega</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMBODEGA' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+         <div class="col">
+          <div class="card shadow-sm">
+            <img src="/static/img/imgAdmin/area.png" class="rounded float-end" alt="..." width="100%" height="225">
+            <div class="card-body">
+              <p class="card-text">Administrar área bodega</p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <a class="btn btn-success btn-sm" href="{% url 'ADMAREA' %}" role="button">Ir al sitio</a>
+                <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="10%" height="10%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

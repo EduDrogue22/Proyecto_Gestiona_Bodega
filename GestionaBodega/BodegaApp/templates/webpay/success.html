@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éxito en la transacción</title>
+</head>
+<body>
+    <h1>Éxito en la transacción</h1>
+    
+    <!-- Formulario con el token y la acción (URL) de Webpay Plus -->
+    <form method="post" action="https://webpay3gint.transbank.cl/webpayserver/initTransaction">
+        <input type="hidden" name="token_ws" value="{{ token_ws }}" />
+        <input type="submit" value="Ir a pagar" />
+    </form>
+</body>
+</html>

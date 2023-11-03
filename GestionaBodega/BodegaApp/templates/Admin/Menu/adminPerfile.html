@@ -1,0 +1,81 @@
+{% extends 'Admin/baseAdmin.html' %}
+{% load static %}
+{% block titulo %}
+
+{% endblock %}
+{% block content %}
+
+<div style="text-align: center; color: aliceblue; margin-top:2%">
+  <h1>Administrar perfil de usuario</h1>
+</div>
+
+<div class="container">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between" style="margin-bottom: 2%;">
+      <div class="d-grid gap-2 d-md-block">
+        <a href="{% url 'AGREPERFIL' %}"><button class="btn btn-success" type="button"><img
+              src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped table-responsive table-hover table-bordered">
+    <thead>
+      <tr>
+        <div id="mensaje-error" style="color: white;">{{ mensaje }}</div>
+        <th>ID</th>
+        <th>Nombre perfil de usuario</th>
+        <th>Operaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reg in perfiles %}
+      <tr>
+        <th>{{reg.id_tp_colab}}</th>
+        <th>{{reg.nombre_colab }}</th>
+        <th>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-star">
+            <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_tp_colab }}')">
+              <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
+            </button>
+            <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.id_tp_colab }}')">
+              <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
+            </button>
+          </div>
+
+        </th>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  function eliminar(id) {
+    Swal.fire({
+      title: 'Desea eliminar perfil ' + id + '?',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        location.href = '/eliminar_perfil/' + id + '/';
+      }
+    })
+
+  }
+
+  function modificar(id) {
+        location.href = '/modificarPerfil/' + id + '/';
+    }
+
+  {% if messages %}
+    {% for message in messages %}
+        Swal.fire({
+            title: "{{ message.tags }}",
+            text: "{{ message }}",
+            icon: "{{ message.tags }}",
+        });
+    {% endfor %}
+  {% endif %}
+</script>
+{% endblock %}

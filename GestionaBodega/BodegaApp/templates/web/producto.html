@@ -1,0 +1,93 @@
+{% extends 'web/base.html' %}
+
+{% block titulo %}
+Producto
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-image: url('/static/img/fondoAdmin.png');
+        background-size: 100% 100%;
+        background-attachment: fixed;
+        background-color: rgb(29, 28, 28);
+        background-blend-mode: soft-light;
+    }
+</style>
+
+<h1 class="text-center text-light mt-5">Productos</h1>
+
+<div class="container-fluid p-5">
+
+    <form action="{% url 'BUSCPRO' %}" method="get" class="mb-3">
+        <div class="row">
+            <div class="col-2 col-md-2">
+
+            </div>
+            <div class="col-12 col-md-2">
+                <div class="input-group input-group-sm rounded-pill bg-white">
+                    <button type="submit" class="btn fw-bold">
+                        <img src="/static/img/buscar_prod.png" alt="Icono"
+                            style="width: 20px; height: 20px; margin-right: 5px;">
+                    </button>
+                    <input type="search" class="form-control bg-transparent border-0" name="txtNombreProd"
+                        placeholder="Buscar Producto"/>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% for prod in productos %}
+<form action="{% url 'DESPA' %}" method="POST" class="mb-3">
+    <div class="row border border-dark align-items-center" style="background: #D9D9D9;">
+        {% csrf_token %}
+
+        <!-- Imagen -->
+        <div class="col-12 col-md-2 p-0 text-center mt-2 mb-2" >
+            <img src="/media/{{prod.foto_prod}}" class="img-fluid border border-dark" style="width: 75%; height: 150px;">
+        </div>
+
+        <!-- Nombre Producto -->
+        <div class="col-12 col-md-2 text-center">
+            <p class="">Nombre</p>
+            <p class="fs-3 fw-bold">{{prod.nombre_producto}}</p>
+        </div>
+
+        <!-- Stock -->
+        <div class="col-12 col-md-2 text-center">
+            <p>Stock</p>
+            <p class="fs-3 fw-bold">{{prod.stock}}</p>
+        </div>
+
+        <!-- Bodega -->
+        <div class="col-12 col-md-2 text-center">
+            <p class="">Bodega</p>
+            <p class="fs-3 fw-bold">{{prod.id_area.id_bodega.nombre_bodega}}</p>
+        </div>
+
+        <!-- Ubicación Bodega -->
+        <div class="col-12 col-md-2 text-center">
+            <p class="">Ubicación</p>
+            <p class="fs-3 fw-bold">{{prod.id_area.id_bodega.direccion}}</p>
+        </div>
+
+        <!-- Botón Despachar -->
+        <div class="col-12 col-md-2 text-center d-flex align-items-center justify-content-center">
+            <input type="hidden" name="id_prod" value="{{ prod.id_producto }}">
+            <input type="hidden" name="rut_cli" value="{{ prod.rut_id}}">
+            <button type="submit" class="btn fw-bold text-white mb-2 border-dark mb-3 border-2 rounded-0" style="background-color: #957755;">
+                <img src="/static/img/caja_despachar.png" alt="Icono" style="width: 30px; height: 30px; margin-right: 5px;"> 
+                Despachar
+            </button>
+        </div>
+
+    </div>
+</form>
+{% endfor %}
+
+
+</div>
+
+
+{% endblock %}

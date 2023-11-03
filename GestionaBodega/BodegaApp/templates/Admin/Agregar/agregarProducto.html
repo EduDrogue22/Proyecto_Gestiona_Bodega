@@ -8,50 +8,59 @@
 <div style="text-align: center; color: aliceblue;">
     <h1>Agregar Producto</h1>
 </div>
-<section class="d-flex justify-content-center "  id="formulario">
-        <div class="card col-sm-6 p-3" style="background-color: gray;">
-            <div class="mb-2">
-                <form action="#" method="POST" id="form">
-                    {% csrf_token %}
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                        <input type="number" class="form-control" style="border-radius: 10px; text-align: center;" name="stock" id="stock" placeholder="Ingrese stock" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Bodega</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+<section class="d-flex justify-content-center " id="formulario">
+    <div class="card col-sm-6 p-3" style="background-color: gray;">
+        <div class="mb-2">
+            <form action="{% url 'AGREPRODUCTO' %}" method="POST" id="form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                <div class="mb-2 form-input">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus>
+                </div>
+                <div class="mb-2 form-input">
+                    <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="stock" id="stock" placeholder="Ingrese stock" autofocus>
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectBodega">Selecciona una bodega:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectBodega">
+                        <option selected value="0">Bodega</option>
+                        {% for bod in bodegas %}
+                        <option value="{{ bod.id_bodega }}">{{ bod.nombre_bodega }}</option>
+                        {% endfor %}
                     </select>
-                     </div>
-                    <div class="mb-2 form-input">
-                      <select class="form-select" aria-label="Default select example">
-                        <option selected>Cliente</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectCliente">Seleccione un cliente:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectCliente">
+                        <option selected value="0">Cliente</option>
+                        {% for nom in clientes %}
+                            <option value="{{ nom.rut.rut }}">{{ nom.rut.primer_nombre }} {{ nom.rut.apellido_paterno }}</option>
+                        {% endfor %}
+    
                     </select>
-                     </div>
-                    <div class="mb-2 form-input">
-                      <select class="form-select" aria-label="Default select example">
-                        <option selected>Sector</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectSector">Selecciona un sector:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectSector">
+                        <option selected value="0">Sector</option>
+                        {% for area in areas %}
+                            <option value="{{ area.id_area }}">{{ area.sector }}</option>
+                        {% endfor %}
                     </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Subir foto</label>
-                        <input class="form-control" type="file" id="formFile">
-                    </div>
-                    <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
-                        <a href="{% url 'ADMPRODUCTO' %}"><button class="btn btn-danger btn-lg me-md-5" type="button">Cancelar</button></a>
-                        <button class="btn btn-success btn-lg" type="button" >Confirmar</button>
-                    </div>
-            </div>
+                </div>
+                <div class="mb-3">
+                    <label for="formFileProducto" class="form-label">Subir foto</label>
+                    <input class="form-control" type="file" id="formFileProducto">
+                </div>
+                <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
+                    <a href="{% url 'ADMPRODUCTO' %}"><button class="btn btn-danger btn-lg me-md-5"
+                            type="button">Cancelar</button></a>
+                    <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
+                </div>
             </form>
-    </section>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -6,29 +6,34 @@
 {% block content %}
 <div style="padding: 4%;"></div>
 <div style="text-align: center; color: aliceblue;">
-    <h1>Agregar Plan</h1>
+    <h1>Modificar Plan</h1>
 </div>
 <section class="d-flex justify-content-center " id="formulario">
     <div class="card col-sm-6 p-3" style="background-color: gray;">
         <div class="mb-2">
-            <form action="{% url 'AGREPLAN' %}" method="POST" id="form" onsubmit="return validarPlan(event)">
+            <form action="{% url 'MODIFPLAN' planes.id_plan %}" method="POST" id="form" onsubmit="return validarPlan(event)">
                 {% csrf_token %}
                 <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                <input class="colum" type="hidden" name="txtId" id="txtId" value="{{planes.id_plan}}">
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_plan" id="nombre_plan" placeholder="Ingrese nombre plan" autofocus>
+                        name="nombre_plan" id="nombre_plan" placeholder="Ingrese nombre plan" autofocus
+                        value="{{planes.nombre_plan}}">
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="costo" id="costo" placeholder="Ingrese costo" autofocus>
+                        name="costo" id="costo" placeholder="Ingrese costo" autofocus
+                        value="{{planes.valor_plan}}">
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="cant_anaqueles" id="cant_anaqueles" placeholder="Ingrese cantidad de anaqueles" autofocus>
+                        name="cant_anaqueles" id="cant_anaqueles" placeholder="Ingrese cantidad de anaqueles" autofocus
+                        value="{{planes.cant_anaquel_plan}}">
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="capacidad" id="capacidad" placeholder="Ingrese capacidad m3" autofocus>
+                        name="capacidad" id="capacidad" placeholder="Ingrese capacidad m3" autofocus
+                        value="{{planes.capacidad_anaquel}}">
                 </div>
 
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
