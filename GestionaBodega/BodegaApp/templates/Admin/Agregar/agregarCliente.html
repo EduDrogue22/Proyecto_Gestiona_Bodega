@@ -13,7 +13,15 @@
         <div class="mb-2">
             <form action="{% url 'AGRECLIENTE' %}" method="POST" id="form" onsubmit="return validarCliente(event)">
                 {% csrf_token %}
-                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                 <script>
+                    {% if error_message %}
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '{{ error_message }}'
+                    });
+                    {% endif %}
+                </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="p_nombre_cli" id="p_nombre_cli" placeholder="Ingrese primer nombre" autofocus>
@@ -41,7 +49,7 @@
                 <div class="mb-2 form-input">
                     <label for="floatingInput">Fecha de nacimiento</label>
                     <input type="date" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="date_cli" id="date_cli" autofocus>
+                        name="fecha_nac" id="fecha_nac" autofocus>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
@@ -51,20 +59,18 @@
                     <label for="selectTpBodega">Selecciona sucursal:</label>
                     <select class="form-select" aria-label="Default select example" id="selectSucursal"
                     name="selectSucursal">
-                        <option selected value = "0">Sucursal</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        {% for sucursales in sucursal %}
+                        <option value="{{ sucursales.id_sucursal }}">{{ sucursales.nombre_sucursal }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
                     <label for="selectBodega">Selecciona bodega:</label>
-                    <select class="form-select" aria-label="Default select example" id="selectBodega"
-                    name="selectBodega">
-                        <option selected value = "0">Sucursal</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                     <select class="form-select" aria-label="Default select example" id="selectBodega"
+                        name="selectBodega">
+                        {% for bodega in bodega %}
+                        <option value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
@@ -75,6 +81,7 @@
                     <input type="password" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="pass_cli_re" id="pass_cli_re" placeholder="repetir contraseña" autofocus>
                 </div>
+                <input class="colum" type="hidden" name="txtId" id="txtId" value="1">
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
                     <a href="{% url 'ADMCLIENTE' %}"><button class="btn btn-danger btn-lg me-md-5"
                             type="button">Cancelar</button></a>

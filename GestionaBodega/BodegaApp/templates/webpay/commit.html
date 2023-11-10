@@ -1,0 +1,19 @@
+{% extends 'web/base.html' %}
+
+{% block titulo %}
+Resultado Transacción
+{% endblock %}
+
+{% block content %}
+
+    {% if resp.status == 'AUTHORIZED' %}
+    <h1 class="text-center text-white">Transacción autorizada</h1>
+    <form method="post" action="{% url 'webpay_refund' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Reembolsar Transacción</button>
+    </form>
+    {% else %}
+    <h1 class="text-center text-white">Transacción rechazada</h1>
+    {% endif %}
+    
+{% endblock %}

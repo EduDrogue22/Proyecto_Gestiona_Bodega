@@ -31,15 +31,14 @@
       </tr>
     </thead>
     <tbody>
-      {% for prod in productos %}
       <tr>
-        <th>{{prod.id_producto}}</th>
-        <th>{{prod.nombre_producto}}</th>
-        <th>{{prod.stock}}</th>
-        <th>{{prod.rut.id_sucursal.nombre_sucursal}}</th>
-        <th>{{prod.id_area.id_bodega.nombre_bodega}}</th>
-        <th>{{prod.id_area.sector}}</th>
-        <th> <img src="/media/{{prod.foto_prod}}" alt="" style="width: 75%; height: 150px;" > </th>
+        <th>1</th>
+        <th>Tallarines</th>
+        <th>100</th>
+        <th>Lider</th>
+        <th>Manchester</th>
+        <th>a21</th>
+        <th> <img src="{% static 'img/producto.png' %}" alt="" width="50%" height="50%" > </th>
         <th>
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
           <button class="btn btn-danger me-md-2" type="button">
@@ -52,7 +51,6 @@
         
         </th>
       </tr>
-      {% endfor %}
     </tbody>
   </table>
 </div>

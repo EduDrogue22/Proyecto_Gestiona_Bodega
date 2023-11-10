@@ -11,9 +11,18 @@
 <section class="d-flex justify-content-center " id="formulario">
     <div class="card col-sm-6 p-3" style="background-color: gray;">
         <div class="mb-2">
-            <form action="{% url 'AGREPRODUCTO' %}" method="POST" id="form" enctype="multipart/form-data">
+            <form action="{% url 'AGREPRODUCTO' %}" method="POST" id="form" onsubmit="return validarProducto(event) ">
                 {% csrf_token %}
-                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                 <script>
+                    {% if mensaje %}
+                        Swal.fire({
+                            title: 'Error al guardar',
+                            text: '{{ mensaje }}',    
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    {% endif %}
+                </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus>
@@ -26,28 +35,27 @@
                     <label for="selectBodega">Selecciona una bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectBodega">
                         <option selected value="0">Bodega</option>
-                        {% for bod in bodegas %}
-                        <option value="{{ bod.id_bodega }}">{{ bod.nombre_bodega }}</option>
-                        {% endfor %}
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
                     </select>
                 </div>
                 <div class="mb-2 form-input">
                     <label for="selectCliente">Seleccione un cliente:</label>
                     <select class="form-select" aria-label="Default select example" id="selectCliente">
                         <option selected value="0">Cliente</option>
-                        {% for nom in clientes %}
-                            <option value="{{ nom.rut.rut }}">{{ nom.rut.primer_nombre }} {{ nom.rut.apellido_paterno }}</option>
-                        {% endfor %}
-    
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
                     </select>
                 </div>
                 <div class="mb-2 form-input">
                     <label for="selectSector">Selecciona un sector:</label>
                     <select class="form-select" aria-label="Default select example" id="selectSector">
                         <option selected value="0">Sector</option>
-                        {% for area in areas %}
-                            <option value="{{ area.id_area }}">{{ area.sector }}</option>
-                        {% endfor %}
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
                     </select>
                 </div>
                 <div class="mb-3">

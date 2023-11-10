@@ -13,8 +13,7 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between" style="margin-bottom: 2%;">
       <div class="d-grid gap-2 d-md-block">
-        <a href="{% url 'AGREBODEGA' %}"><button class="btn btn-success" type="button"><img
-              src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
+        <a href="{% url 'AGREBODEGA' %}"><button class="btn btn-success" type="button"><img src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
       </div>
     </div>
   </div>
@@ -29,21 +28,21 @@
       </tr>
     </thead>
     <tbody>
-      {% for reg in bodegas %}
+    {% for reg in bodegas %}
       <tr>
         <th>{{reg.id_bodega}}</th>
         <th>{{reg.nombre_bodega}}</th>
         <th>{{reg.direccion}}</th>
-        <th>{{reg.id_tp_bodega.nom_tipo_bodega }}</th>
+        <th>{{reg.id_tp_bodega }}</th>
         <th>
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
-            <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_bodega }}')">
+          <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_bodega }}')">
               <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
-            </button>
-            <button class="btn btn-warning" type="button">
-              <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
-            </button>
-          </div>
+          </button>
+          <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.id_bodega }}')">
+            <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
+          </button>
+        </div>
         </th>
       </tr>
       {% endfor %}
@@ -63,6 +62,10 @@
       }
     })
 
+  }
+
+  function modificar(id) {
+    location.href = '/modificarBodega/' + id + '/';
   }
 
   {% if messages %}

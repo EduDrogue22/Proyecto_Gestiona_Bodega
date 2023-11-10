@@ -8,31 +8,44 @@
 <div style="text-align: center; color: aliceblue;">
     <h1>Modificar Sucursal</h1>
 </div>
-<section class="d-flex justify-content-center "  id="formulario">
-        <div class="card col-sm-6 p-3" style="background-color: gray;">
-            <div class="mb-2">
-                <form action="#" method="POST" id="form">
-                    {% csrf_token %}
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="nombre_sus" id="nombre_sus" placeholder="Ingrese nombre de sucursal" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="direccion_sus" id="direccion_sus" placeholder="Ingrese dirección" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Empresa</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+<section class="d-flex justify-content-center " id="formulario">
+    <div class="card col-sm-6 p-3" style="background-color: gray;">
+        <div class="mb-2">
+            <form action="{% url 'MODFSUCURSAL' sucursal.id_sucursal %}" method="POST" id="form" onsubmit="return validarSucursal(event) ">
+                {% csrf_token %}
+                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                <input class="colum" type="hidden" name="txtId" id="txtId" value="{{sucursal.id_sucursal}}">
+                <div class="mb-2 form-input">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="nombre_sus" id="nombre_sus" placeholder="Ingrese nombre de sucursal" autofocus
+                        value="{{sucursal.nombre_sucursal}}">
+                </div>
+                <div class="mb-2 form-input">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="direccion_sus" id="direccion_sus" placeholder="Ingrese dirección" autofocus
+                        value="{{sucursal.direccion}}">
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectEmpresa">Selecciona una empresa:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectEmpresa" name="selectEmpresa">
+                        {% for empresa in empresas %}
+                        {% if sucursal.rut_empresa.nombre_empresa == empresa.nombre_empresa %}
+                            <option selected value="{{ empresa.rut_empresa }}">{{ empresa.nombre_empresa }}</option>
+                        {% else %}
+                            <option value="{{ empresa.rut_empresa }}">{{ empresa.nombre_empresa }}</option>
+                        {% endif %}
+                        {% endfor %}
                     </select>
-                     </div>
-                  
-                    <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
-                        <a href="{% url 'ADMSUCRUSAL' %}"><button class="btn btn-danger btn-lg me-md-5" type="button">Cancelar</button></a>
-                        <button class="btn btn-success btn-lg" type="button" >Confirmar</button>
-                    </div>
-            </div>
+                </div>
+
+                <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
+                    <a href="{% url 'ADMSUCRUSAL' %}"><button class="btn btn-danger btn-lg me-md-5"
+                            type="button">Cancelar</button></a>
+                    <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
+                </div>
             </form>
-    </section>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

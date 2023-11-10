@@ -1,3 +1,8 @@
+// Expresión regular mejorada para validar correos electrónicos,rut y nombres de usuario
+var formatoCorreo = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+var formatoRut = /^(\d{7,8}-[0-9Kk])$/;
+var formatoNombre = /^[A-Za-zñÑ\s]+$/;
+
 function error(message){
     Swal.fire({
         titleText: "Error",

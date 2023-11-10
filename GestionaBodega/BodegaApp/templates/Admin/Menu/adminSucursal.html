@@ -39,7 +39,7 @@
           <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_sucursal }}')">
               <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
           </button>
-          <button class="btn btn-warning" type="button">
+          <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.id_sucursal }}')">
             <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
           </button>
         </div>
@@ -63,6 +63,10 @@
       }
     })
 
+  }
+
+  function modificar(id) {
+    location.href = '/modificarSucursal/' + id + '/';
   }
 
   {% if messages %}

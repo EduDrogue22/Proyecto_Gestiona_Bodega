@@ -8,26 +8,36 @@
 <div style="text-align: center; color: aliceblue;">
     <h1>Modificar Empresa</h1>
 </div>
-<section class="d-flex justify-content-center "  id="formulario">
-        <div class="card col-sm-6 p-3" style="background-color: gray;">
-            <div class="mb-2">
-                <form action="#" method="POST" id="form">
-                    {% csrf_token %}
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                        <input type="number" class="form-control" style="border-radius: 10px; text-align: center;" name="rut_emp" id="rut_emp" placeholder="Ingrese su RUT" autofocus required>
-                    </div>
-                     <div class="mb-2 form-input">
-                        <label>Descripción</label>
-                        <textarea type="text" rows="8" cols="25" class="form-control" name="descrip_emp" id="descrip_emp" autofocus></textarea>
-                    </div>
-                    <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
-                        <a href="{% url 'ADMEMPRESA' %}"><button class="btn btn-danger btn-lg me-md-5" type="button">Cancelar</button></a>
-                        <button class="btn btn-success btn-lg" type="button" >Confirmar</button>
-                    </div>
-            </div>
+<section class="d-flex justify-content-center" id="formulario">
+    <div class="card col-sm-6 p-3" style="background-color: gray;">
+        <div class="mb-2">
+            <form action="{% url 'MODIFEMPRESA' empresas.rut_empresa %}" method="POST" id="form" onsubmit="return validarEmpresas(event)">
+                {% csrf_token %}
+                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                    name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa" autofocus
+                    value="{{ empresas.nombre_empresa }}">
+
+                <div class="mb-2 form-input">
+                    <input type="hidden" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="rut_emp" id="rut_emp" placeholder="Ingrese rut: 12345678-k" autofocus
+                        value="{{ empresas.rut_empresa }}">
+                </div>
+                <div class="mb-2 form-input">
+                    <label>Descripción</label>
+                    <textarea rows="8" cols="25" class="form-control" name="descrip_emp" id="descrip_emp"
+                        autofocus>{{ empresas.descripcion }}</textarea>
+                </div>
+
+                <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
+                    <a href=" {% url 'ADMEMPRESA' %}">
+                        <button class="btn btn-danger btn-lg me-md-5" type="button">Cancelar</button>
+                    </a>
+                    <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
+                </div>
             </form>
-    </section>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

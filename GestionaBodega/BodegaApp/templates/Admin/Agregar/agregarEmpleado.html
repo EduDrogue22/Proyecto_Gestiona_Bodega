@@ -13,6 +13,15 @@
         <div class="mb-2">
             <form action="{% url 'AGREEMP' %}" method="POST" id="form" onsubmit="return validarEmpleado(event)">
                 {% csrf_token %}
+                <script>
+                    {% if error_message %}
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '{{ error_message }}'
+                    });
+                    {% endif %}
+                </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="p_nombre_emp" id="p_nombre_emp" placeholder="Ingrese primer nombre" autofocus>
@@ -40,21 +49,19 @@
                 <div class="mb-2 form-input">
                     <label for="selectPerfil">Seleccione perfil de usuario:</label>
                     <select class="form-select" aria-label="Default select example" id="selectPerfil"
-                    name="selectPerfil">
-                        <option selected>Perfil de Usuario</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        name="selectPerfil">
+                        {% for tpColab in tpColab %}
+                        <option value="{{ tpColab.id_tp_colab }}">{{ tpColab.nombre_colab }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
                     <label for="selectBodega">Selecciona bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectBodega"
-                    name="selectBodega">
-                        <option selected>Bodega</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        name="selectBodega">
+                        {% for bodega in bodega %}
+                        <option value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
@@ -70,9 +77,9 @@
                             type="button">Cancelar</button></a>
                     <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
                 </div>
-
-        </form>
+                <input class="colum" type="hidden" name="txtId" id="txtId" value="2">
+            </form>
+        </div>
     </div>
-</div>
 </section>
 {% endblock %}

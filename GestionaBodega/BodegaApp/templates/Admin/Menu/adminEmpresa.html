@@ -13,7 +13,8 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-between" style="margin-bottom: 2%;">
       <div class="d-grid gap-2 d-md-block">
-        <a href="{% url 'AGREEMPRESA' %}"><button class="btn btn-success" type="button"><img src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
+        <a href="{% url 'AGREEMPRESA' %}"><button class="btn btn-success" type="button"><img
+              src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
       </div>
     </div>
   </div>
@@ -27,7 +28,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for reg in empresas %}
+      {% for reg in empresas %}
       <tr>
         <th>{{reg.nombre_empresa}}</th>
         <th>{{reg.rut_empresa}}</th>
@@ -36,12 +37,12 @@
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
             <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.rut_empresa }}')">
               <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
-          </button>
-          <button class="btn btn-warning" type="button">
-            <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
-          </button>
-        </div>
-        
+            </button>
+            <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.rut_empresa }}')">
+              <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
+            </button>
+          </div>
+
         </th>
       </tr>
       {% endfor %}
@@ -63,14 +64,18 @@
 
   }
 
+  function modificar(id) {
+    location.href = '/modificarEmpresa/' + id + '/';
+  }
+
   {% if messages %}
-    {% for message in messages %}
-        Swal.fire({
-            title: "{{ message.tags }}",
-            text: "{{ message }}",
-            icon: "{{ message.tags }}",
-        });
-    {% endfor %}
+  {% for message in messages %}
+  Swal.fire({
+    title: "{{ message.tags }}",
+    text: "{{ message }}",
+    icon: "{{ message.tags }}",
+  });
+  {% endfor %}
   {% endif %}
 </script>
 {% endblock %}

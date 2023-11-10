@@ -13,7 +13,16 @@
         <div class="mb-2">
             <form action="{% url 'AGREEMPRESA' %}" method="POST" id="form" onsubmit="return validarEmpresas(event)">
                 {% csrf_token %}
-                <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
+                 <script>
+                    {% if mensaje %}
+                        Swal.fire({
+                            title: 'Error al guardar',
+                            text: '{{ mensaje }}',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    {% endif %}
+                </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa" autofocus>
