@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reembolso Transacción</title>
-</head>
-<body>
-    <h1>Reenbolso realizado con éxito</h1>
-    <p>Detalles:</p>
-    <p>{{ amount }}</p>
-</body>
-</html>
+{% extends 'web/base.html' %}
+
+{% block titulo %}
+Transacción Cancelada
+{% endblock %}
+
+{% block content %}
+<div class="container w-50 mt-5 mb-5 rounded center text-center" style="background-color: silver;">
+    <h1>Cancelación exitosa</h1>
+    <h5 class="mb-5">Has cancelado la transacción.</h5>
+</div>
+{% endblock %}

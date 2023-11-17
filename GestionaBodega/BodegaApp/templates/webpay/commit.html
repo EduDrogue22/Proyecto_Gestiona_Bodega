@@ -5,15 +5,13 @@ Resultado Transacción
 {% endblock %}
 
 {% block content %}
-
+<div class="container w-50 mt-5 mb-5 rounded center text-center" style="background-color: silver;">
     {% if resp.status == 'AUTHORIZED' %}
-    <h1 class="text-center text-white">Transacción autorizada</h1>
-    <form method="post" action="{% url 'webpay_refund' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-success">Reembolsar Transacción</button>
-    </form>
+    <h1>Transacción autorizada</h1>
+    <h5>{{ message }}</h5>
     {% else %}
-    <h1 class="text-center text-white">Transacción rechazada</h1>
+    <h1>Transacción rechazada</h1>
+    <h5>{{ message }}</h5>
     {% endif %}
-    
+</div>
 {% endblock %}

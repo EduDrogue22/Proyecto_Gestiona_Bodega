@@ -33,24 +33,21 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item text-center" style="margin-left: 10px;">
-                    <a class="nav-link active" aria-current="page" href="#"><img src="/static/img/inicio.png" alt="Inicio" width="60" height="50"><br>Inicio</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><img src="/static/img/inicio.png" alt="Inicio" width="60" height="50"><br>Inicio</a>
                   </li>
                   <li class="nav-item text-center" style="margin-left: 30px;">
-                    <a class="nav-link" href="#"><img src="/static/img/producto.png" alt="" width="60" height="50"><br>Productos</a>
+                    <a class="nav-link" href="{% url 'PROD' %}"><img src="/static/img/producto.png" alt="" width="60" height="50"><br>Productos</a>
                   </li>
                   <li class="nav-item text-center" style="margin-left: 30px;">
-                    <a class="nav-link" href=""><img src="/static/img/plan.png" alt="" width="55" height="50"><br>Planes</a>
+                    <a class="nav-link" href="{% url 'PLAN' %}"><img src="/static/img/plan.png" alt="" width="55" height="50"><br>Planes</a>
                   </li>
                   <li class="nav-item text-center" style="margin-left: 30px;">
-                    <a class="nav-link" href=""><img src="/static/img/despacho.png" alt="" width="70" height="50"><br>Despacho</a>
-                  </li>
-                  <li class="nav-item text-center" style="margin-left: 30px;">
-                    <a class="nav-link" href=""><img src="/static/img/sucursal.png" alt="" width="55" height="50"><br>Registrar Sucursal</a>
+                    <a class="nav-link" href="{% url 'DESPCHO' %}"><img src="/static/img/despacho.png" alt="" width="70" height="50"><br>Despacho</a>
                   </li>
                   </ul>
                   <ul class="navbar-nav me-2 mb-2 mb-lg-0">
                     <li class="nav-item text-center mt-2" style="margin-left: 30px;">
-                        <a class="nav-link" href=""><img src="/static/img/userPerfil.png" alt="" width="30" height="30" class="me-2">Perfil</a>
+                        <a class="nav-link" href="{% url 'PERFIL' %}"><img src="/static/img/userPerfil.png" alt="" width="30" height="30" class="me-2">Perfil</a>
                     </li>
                     <li class="nav-item text-center" style="margin-left: 30px;">
                         <a class="nav-link" href="{% url 'logout' %}"><img src="/static/img/logout.png" alt="" width="50" height="50"><button class="btn btn-info">Cerrar Sesión</button></a>

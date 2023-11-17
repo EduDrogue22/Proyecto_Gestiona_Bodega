@@ -1,0 +1,89 @@
+{% extends 'jefe_bodega/base_jefe.html' %}
+{% load static %}
+
+{% block titulo %}
+Agregar Producto
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-image: url('/static/img/fondoAdmin.png');
+        background-size: 100% 100%;
+        background-attachment: fixed;
+        background-color: rgb(29, 28, 28);
+        background-blend-mode: soft-light;
+    }
+</style>
+
+<section>
+    <header class="text-center text-black mt-5" style="font-family: Arial, Helvetica, sans-serif">
+        <h1 class="text-white">Agregar Producto</h1>
+    </header>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4 mt-3  border rounded-3 colorForm">
+                <form action="{% url 'REGSPRO' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+
+                        <input type="text" maxlength="50" placeholder="Nombre Producto"
+                            class="form-control mt-3 text-center" name="nombre_producto">
+                        <div class="row mt-3  justify-content-center align-items-center">
+                            <div class="col-6">
+                                <input type="number" placeholder="Stock" class="form-control text-center" name="stock">
+                            </div>
+
+                            <div class="mt-3">
+                                <select class="form-select text-center" name="rut" id="rut">
+                                    <option value="" selected>Nombre Cliente</option>
+                                    {% for nom in clientes %}
+                                    <option value="{{ nom.rut }}">{{ nom.primer_nombre }} {{ nom.apellido_paterno }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mt-3">
+                                <select class="form-select text-center" name="id_area" id="area">
+                                    <option value="" selected>Sector</option>
+                                    {% for area in areas %}
+                                    <option value="{{ area.id_bodega__areabodega__id_area}}">{{area.id_bodega__areabodega__sector }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-3 text-center mt-3 text-white">
+                                <label for="formFile" class="form-label">Subir Foto</label>
+                                <input class="form-control" type="file" name="foto_prod" id="formFile" accept="image/*">
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-success" value="Enviar" type="submit">Confirmar</button>
+
+                                <a href="{% url 'HOMECOL' %}"> <button class="btn btn-danger"
+                                        type="button">Cancelar</button></a>
+                            </div>
+
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if errorProd %}
+<script>
+    errorProd("{{ error_message }}");
+</script>
+{% elif exitoProd %}
+<script>
+    exitoProd("{{ exito_message }}","{{title}}");
+</script>
+{% endif %}
+
+
+{% endblock %}

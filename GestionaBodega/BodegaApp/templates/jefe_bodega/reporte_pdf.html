@@ -1,0 +1,47 @@
+{% extends template_name %}
+{% load static %}
+
+{% block titulo %}
+Reportes Despacho
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-image: url('/static/img/fondoAdmin.png');
+        background-size: 100% 100%;
+        background-attachment: fixed;
+        background-color: rgb(29, 28, 28);
+        background-blend-mode: soft-light;
+    }
+</style>
+<section>
+    <h1 class="text-center text-light mt-5">Productos</h1>
+
+    <div class="container p-4 mt-5">
+
+        <div class="row w-75 mx-auto border border-dark text-center mt-4 rounded-top border-2" style="background: #D9D9D9; height: 150px;">
+            <div class="col mt-3">
+                <h3 class="p-4 mt-3">Hoja Entrega Despacho</h3>
+            </div>
+            <div class="col border-start border-dark d-flex justify-content-center border-2">
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{% url 'REPODESP' %}"> <button class="btn btn-outline-info mt-5 rounded-pill text-black" style="background: #D9D9D9;" type="button">Ver Entregas</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="row w-75 mx-auto border-start border-bottom border-dark text-center rounded-bottom border-2" style="background: #D9D9D9; height: 150px;">
+            <div class="col mt-3">
+                <h3 class="p-4 mt-3 text-black">Hoja ubicaciones de productos</h3>
+            </div>
+            <div class="col border-end border-start border-dark d-flex justify-content-center border-2">
+                <div class="d-flex justify-content-between mt-5">
+                    <a href="{% url 'PLTPDF' %}"> <button class="btn btn-outline-info rounded-pill text-black" style="background: #D9D9D9;" type="button">Ver Documento</button></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

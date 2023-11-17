@@ -1,57 +1,88 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Modif. Producto
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
 <div style="text-align: center; color: aliceblue;">
-    <h1>Modificar Producto</h1>
+    <h1>Agregar Producto</h1>
 </div>
-<section class="d-flex justify-content-center "  id="formulario">
-        <div class="card col-sm-6 p-3" style="background-color: gray;">
-            <div class="mb-2">
-                <form action="#" method="POST" id="form">
-                    {% csrf_token %}
-                    <div class="mb-2 form-input">
-                        <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                        <input type="number" class="form-control" style="border-radius: 10px; text-align: center;" name="stock" id="stock" placeholder="Ingrese stock" autofocus required>
-                    </div>
-                    <div class="mb-2 form-input">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Bodega</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+<section class="d-flex justify-content-center " id="formulario">
+    <div class="card col-sm-6 p-3" style="background-color: gray;">
+        <div class="mb-2">
+            <form action="{% url 'MODPIFRODUCTOADMIN' producto.id_producto %}" method="POST" id="form"
+                onsubmit="return validarProducto(event) " enctype="multipart/form-data">
+                {% csrf_token %}
+                <script>
+                    {% if mensaje %}
+                    Swal.fire({
+                        title: 'Error al guardar',
+                        text: '{{ mensaje }}',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    {% endif %}
+                </script>
+                <input class="colum" type="hidden" name="txtId" id="txtId" value="{{producto.id_producto}}">
+                <div class="mb-2 form-input">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus
+                        value="{{producto.nombre_producto}}">
+                </div>
+                <div class="mb-2 form-input">
+                    <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="stock" id="stock" placeholder="Ingrese stock" autofocus value="{{producto.stock}}">
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectCliente">Seleccione un cliente:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectCliente"
+                        name="selectCliente">
+                        {% for nom in clientes %}
+                        {% if nom.rut|lower == producto.rut.rut.rut|lower %}
+                        <option value="{{nom.rut}}" selected>{{nom.primer_nombre}} {{nom.apellido_paterno}}</option>
+                        {% else %}
+                        <option value="{{nom.rut}}">{{nom.primer_nombre}} {{nom.apellido_paterno}}</option>
+                        {% endif %}
+                        {% endfor %}
                     </select>
-                     </div>
-                    <div class="mb-2 form-input">
-                      <select class="form-select" aria-label="Default select example">
-                        <option selected>Cliente</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                </div>
+                <div class="mb-2 form-input">
+                    <label for="selectSector">Selecciona un sector:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectSector"
+                        name="selectSector">
+                        {% for area in areas %}
+                        {% if area.id_area == producto.id_area.id_area %}
+                        <option value="{{ area.id_area}}" selected>{{area.sector}} - {{area.id_bodega.nombre_bodega}}
+                        </option>
+                        {% else %}
+                        <option value="{{ area.id_area}}">{{area.sector}} - {{area.id_bodega.nombre_bodega}}</option>
+                        {% endif %}
+                        {% endfor %}
                     </select>
-                     </div>
-                    <div class="mb-2 form-input">
-                      <select class="form-select" aria-label="Default select example">
-                        <option selected>Sector</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Subir foto</label>
-                        <input class="form-control" type="file" id="formFile">
-                    </div>
-                    <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
-                        <a href="{% url 'ADMPRODUCTO' %}"><button class="btn btn-danger btn-lg me-md-5" type="button">Cancelar</button></a>
-                        <button class="btn btn-success btn-lg" type="button" >Confirmar</button>
-                    </div>
-            </div>
+                </div>
+                <div class="mb-3" style="display: flex; flex-direction: column; align-items: center;">
+                    <label for="formFileProducto" class="form-label">Imagen actual</label>
+                    {% if producto.foto_prod %}
+                    <img src="{{ producto.foto_prod.url }}" alt="Imagen actual" class="img-fluid">
+                    {% else %}
+                    <span>No hay imagen actual</span>
+                    {% endif %}
+                </div>
+                <input type="hidden" name="foto_prod_actual" value="{{ producto.foto_prod.name }}">
+                <div class="mb-3">
+                    <label for="foto_prod" class="form-label">Subir nueva imagen</label>
+                    <input class="form-control" type="file" id="foto_prod" name="foto_prod" accept="image/*">
+                </div>
+
+                <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
+                    <a href="{% url 'ADMPRODUCTO' %}"><button class="btn btn-danger btn-lg me-md-5"
+                            type="button">Cancelar</button></a>
+                    <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
+                </div>
             </form>
-    </section>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

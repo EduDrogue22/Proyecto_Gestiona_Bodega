@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Admin Producto
 {% endblock %}
 {% block content %}
 
@@ -30,29 +30,58 @@
         <th>Operaciones</th>
       </tr>
     </thead>
-    <tbody>
+   <tbody>
+      {% for prod in productos %}
       <tr>
-        <th>1</th>
-        <th>Tallarines</th>
-        <th>100</th>
-        <th>Lider</th>
-        <th>Manchester</th>
-        <th>a21</th>
-        <th> <img src="{% static 'img/producto.png' %}" alt="" width="50%" height="50%" > </th>
+        <th>{{prod.id_producto}}</th>
+        <th>{{prod.nombre_producto}}</th>
+        <th>{{prod.stock}}</th>
+        <th>{{prod.rut.id_sucursal.nombre_sucursal}}</th>
+        <th>{{prod.id_area.id_bodega.nombre_bodega}}</th>
+        <th>{{prod.id_area.sector}}</th>
+        <th><img src="/media/{{prod.foto_prod}}" alt="" style="width: 45%; height: 90px;"></th>
         <th>
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
-          <button class="btn btn-danger me-md-2" type="button">
+          <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ prod.id_producto }}')">
             <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
           </button>
-          <button class="btn btn-warning" type="button">
+          <button class="btn btn-warning" type="button" onclick="modificar('{{ prod.id_producto }}')">
             <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
           </button>
         </div>
         
         </th>
       </tr>
-    </tbody>
+      {% endfor %}
   </table>
 </div>
+<script>
+  function eliminar(id) {
+    Swal.fire({
+      title: 'Desea eliminar este producto ' + id + '?',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        location.href = '/eliminar_producto_admin/' + id + '/';
+      }
+    })
 
+  }
+
+  function modificar(id) {
+    location.href = '/modificarProductoAdmin/' + id + '/';
+  }
+
+  {% if messages %}
+    {% for message in messages %}
+        Swal.fire({
+            title: "{{ message.tags }}",
+            text: "{{ message }}",
+            icon: "{{ message.tags }}",
+        });
+    {% endfor %}
+  {% endif %}
+</script>
 {% endblock %}

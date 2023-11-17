@@ -27,7 +27,7 @@ Registrarse
                     <input type="text" class="form-control text-center text-black" id="exampleFormControlInput1" name="txtApellidoMaterno" placeholder="Apellido Materno" required>
                 </div>
                 <div class="mb-3">
-                    <input type="number" class="form-control text-center text-black" id="exampleFormControlInput1" name="numRut" placeholder="RUT" required>
+                    <input type="text" class="form-control text-center text-black" id="exampleFormControlInput1" name="txtRut" placeholder="RUT" required>
                 </div>
                 <div class="mb-3">
                     <input type="email" class="form-control text-center text-black" id="exampleFormControlInput1" name="txtCorreo" placeholder="Correo" required>
@@ -60,7 +60,7 @@ Registrarse
                 </div>
                 <div class="mt-3 mb-3 text-center">
                     <a href="{% url 'login' %}" class="btn text-white mt-2" style="background-color: brown;">Cancelar</a>
-                    <button type="submit" class="btn btn-success mt-2">Confirmar</button>
+                    <button type="submit" onclick="validarRutYEnviarFormulario()" class="btn btn-success mt-2">Confirmar</button>
                 </div>
         </form>
     </div>
@@ -103,6 +103,61 @@ Registrarse
             }
         });
     });
+
+    function validarRutYEnviarFormulario() {
+    var rutInput = document.getElementById('txtRut').value;
+    
+    // Llama a la función de validación de RUT
+    var esRutValido = validarRut(rutInput);
+    
+    // Verifica si el RUT es válido
+    if (esRutValido) {
+        // Aquí podrías enviar el formulario si lo deseas
+        document.getElementById('miFormulario').submit();
+    } else {
+        // Muestra la alerta de SweetAlert en caso de error
+        Swal.fire({
+            titleText: "Error",
+            text: "El RUT no es válido.",
+            icon: "error",
+            confirmButtonText: "Ok"
+        });
+    }
+}
+
+// Función para validar RUT
+function validarRut(rut) {
+    // Formato de RUT: 12345678-9
+    var patron = /^(\d{7,8})-([\dkK])$/;
+    
+    // Verifica el formato del RUT
+    if (!patron.test(rut)) {
+        return false;
+    }
+
+    // Separar el número y el dígito verificador
+    var partes = rut.split('-');
+    var rutNumero = partes[0];
+    var rutVerificador = partes[1];
+
+    // Calcular el dígito verificador esperado
+    var suma = 0;
+    var multiplicador = 2;
+    for (var i = rutNumero.length - 1; i >= 0; i--) {
+        suma += parseInt(rutNumero.charAt(i)) * multiplicador;
+        multiplicador = multiplicador < 7 ? multiplicador + 1 : 2;
+    }
+
+    var resto = suma % 11;
+    var digitoEsperado = resto !== 0 ? 11 - resto : 0;
+
+    // Verifica el dígito verificador
+    if (rutVerificador.toLowerCase() !== (digitoEsperado === 10 ? 'k' : digitoEsperado.toString())) {
+        return false;
+    }
+
+    return true;
+}
 </script>
 
 {% endblock %}

@@ -1,0 +1,60 @@
+{% extends template_name %}
+
+{% block titulo %}
+Perfil
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url('/static/img/fondoAdmin.png');
+        background-size: 100% 100%;
+        background-attachment: fixed;
+        background-color: rgb(29, 28, 28);
+        background-blend-mode: soft-light;
+    }
+</style>
+
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-12 col-md-2 h-50 d-inline-block d-flex justify-content-center">
+            <img src="/static/img/foto_perfil.png" class="img-fluid mt-2 mb-5">
+        </div>
+        {% for perf in perfiles %}
+        <div class="col col-md-4 h-50 mt-5">
+            <p class="text-dark text-center p-2 fs-5 fw-bold" style="background: #FFF4F4;">{{perf.primer_nombre}}
+                {{perf.apellido_paterno}}</p>
+            <p class="text-dark text-center p-2 mb-5 fs-5 fw-bold" style="background: #FFF4F4;">{{perf.perfil.edad}}</p>
+        </div>
+        {% endfor %}
+        <div class="col-md-2">
+        </div>
+
+        <div class="col-auto col-md-3 mt-4">
+            <p class="text-dark text-center p-2" style="background: #FFF4F4;">Plan Contratado</p>
+            {% for plan in plan_contratado %}
+            <div class="col-12 col-md-12 border border-2 border-info" style="background-color: #D9D9D9;">
+                <p class="text-center text-light mt-3 fs-4 text-dark">{{plan.id_plan.nombre_plan}}</p>
+                <div class="ms-3 col-11 col-md-11 border border-dark border-2 mb-3"
+                    style="background-color: #FEB75E; height: 400px;">
+                    <p class="text-center text-light mt-2 fs-4 text-dark">{{plan.id_plan.valor_plan}}</p>
+                    <p class="text-start text-light ms-1 mt-5 fs-4 text-dark">Anaqueles:
+                        {{plan.id_plan.cant_anaquel_plan}}</p>
+                    <p class="text-start text-light ms-1 mt-2 mb-5 fs-5 text-dark">Capacidad Anaquel:
+                        {{plan.id_plan.capacidad_anaquel}} productos</p>
+                    {% for bod in bodega %}
+                    <p class="text-start text-light ms-1 mt-2 mb-5 fs-5 text-dark">Bodega:
+                        {{bod.nombre_bodega}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

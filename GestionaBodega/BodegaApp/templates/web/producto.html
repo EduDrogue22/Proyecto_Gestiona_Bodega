@@ -1,4 +1,5 @@
-{% extends 'web/base.html' %}
+{% extends template_name %}
+{% load static %}
 
 {% block titulo %}
 Producto
@@ -19,7 +20,7 @@ Producto
 <h1 class="text-center text-light mt-5">Productos</h1>
 
 <div class="container-fluid p-5">
-
+    {% if user.id_usuario_id == 1 %}
     <form action="{% url 'BUSCPRO' %}" method="get" class="mb-3">
         <div class="row">
             <div class="col-2 col-md-2">
@@ -32,62 +33,172 @@ Producto
                             style="width: 20px; height: 20px; margin-right: 5px;">
                     </button>
                     <input type="search" class="form-control bg-transparent border-0" name="txtNombreProd"
-                        placeholder="Buscar Producto"/>
+                        placeholder="Buscar Producto" />
                 </div>
             </div>
         </div>
     </form>
+    {% else %}
+    <form action="{% url 'BUSCPRO' %}" method="get" class="mb-3">
+        <div class="row">
+            <div class="col-2 col-md-2">
 
+            </div>
+            <div class="col-12 col-md-2">
+                <div class="input-group input-group-sm rounded-pill bg-white">
+                    <button type="submit" class="btn fw-bold">
+                        <img src="/static/img/buscar_prod.png" alt="Icono"
+                            style="width: 20px; height: 20px; margin-right: 5px;">
+                    </button>
+                    <input type="search" class="form-control bg-transparent border-0" name="txtNombreProd"
+                        placeholder="Buscar Producto" />
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+    {% if user.id_usuario_id == 1 %}
     {% for prod in productos %}
-<form action="{% url 'DESPA' %}" method="POST" class="mb-3">
-    <div class="row border border-dark align-items-center" style="background: #D9D9D9;">
-        {% csrf_token %}
+    
+    <form action="{% url 'DESPA' %}" method="POST" class="mb-3">
+        <div class="row border border-dark align-items-center" style="background: #D9D9D9;">
+            {% csrf_token %}
 
-        <!-- Imagen -->
-        <div class="col-12 col-md-2 p-0 text-center mt-2 mb-2" >
-            <img src="/media/{{prod.foto_prod}}" class="img-fluid border border-dark" style="width: 75%; height: 150px;">
+
+            <!-- Imagen -->
+            <div class="col-12 col-md-2 p-0 text-center mt-2 mb-2">
+                <img src="/media/{{prod.foto_prod}}" class="img-fluid border border-dark"
+                    style="width: 75%; height: 150px;">
+            </div>
+
+            <!-- Nombre Producto -->
+            <div class="col-12 col-md-2 text-center">
+                <p class="">Nombre</p>
+                <p class="fs-3 fw-bold">{{prod.nombre_producto}}</p>
+            </div>
+
+            <!-- Stock -->
+            <div class="col-12 col-md-2 text-center">
+                <p>Stock</p>
+                <p class="fs-3 fw-bold">{{prod.stock}}</p>
+            </div>
+
+            <!-- Bodega -->
+            <div class="col-12 col-md-2 text-center">
+                <p class="">Bodega</p>
+                <p class="fs-3 fw-bold">{{prod.id_area.id_bodega.nombre_bodega}}</p>
+            </div>
+
+            <!-- Ubicación Bodega -->
+            <div class="col-12 col-md-2 text-center">
+                <p class="">Ubicación</p>
+                <p class="fs-3 fw-bold">{{prod.id_area.id_bodega.direccion}}</p>
+            </div>
+
+            <!-- Botón Despachar -->
+            <div class="col-12 col-md-2 text-center d-flex align-items-center justify-content-center">
+                <input type="hidden" name="id_prod" value="{{ prod.id_producto }}">
+                <input type="hidden" name="rut_cli" value="{{ prod.rut_id}}">
+                <input type="hidden" name="id_producto" value="{{ prod.id_producto}}">
+                <button type="submit" class="btn fw-bold text-white mb-2 border-dark mb-3 border-2 rounded-0"
+                    style="background-color: #957755;">
+                    <img src="/static/img/caja_despachar.png" alt="Icono"
+                        style="width: 30px; height: 30px; margin-right: 5px;">
+                    Despachar
+                </button>
+            </div>
+
         </div>
+    </form>
+    
+    {% endfor %}
+    {% else %}
+    {% for prodc in productos_colab %}
+    <form action="{% url 'DESPA' %}" method="POST" class="mb-3">
+        <div class="row border border-dark align-items-center" style="background: #D9D9D9;">
+            {% csrf_token %}
 
-        <!-- Nombre Producto -->
-        <div class="col-12 col-md-2 text-center">
-            <p class="">Nombre</p>
-            <p class="fs-3 fw-bold">{{prod.nombre_producto}}</p>
+
+            <!-- Imagen -->
+            <div class="col-12 col-md-2 p-0 text-center mt-2 mb-2" >
+                <img src="/media/{{prodc.foto_prod}}" class="img-fluid border border-dark"
+                    style="width: 75%; height: 150px;">
+            </div>
+
+            <!-- Nombre Producto -->
+            <div class="col-12 col-md-2 text-center">
+                <p>Nombre</p>
+                <p class="fs-3 fw-bold">{{prodc.nombre_producto|capfirst}}</p>
+            </div>
+
+            <!-- Stock -->
+            <div class="col-12 col-md-1 text-center">
+                <p>Stock</p>
+                <p class="fs-3 fw-bold">{{prodc.stock}}</p>
+            </div>
+
+            <div class="col-12 col-md-1 text-center">
+                <p>Sector</p>
+                <p class="fs-3 fw-bold">{{prodc.id_area.sector}}</p>
+            </div>
+
+            <div class="col-12 col-md-2 text-center">
+                <p>Nombre Cliente</p>
+                <p class="fs-3 fw-bold">{{prodc.rut.rut.primer_nombre|capfirst}} {{prodc.rut.rut.apellido_paterno|capfirst}}</p>
+            </div> 
+            <div class="col-md-2 text-center">
+                <button class="btn btn-danger " type="button" onclick="eliminarProd('{{ prodc.nombre_producto }}','{{ prodc.id_producto}}' )"> 
+                    <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
+                    Eliminar
+                </button>
+                
+            </div>
+            <div class="col-md-1 text-center">
+                <a href="{% url 'MODIFPROD' prodc.id_producto %}" class="btn btn-warning" role="button">
+                    <img src="{% static 'img/icon/update.png' %}" style="max-width: 30%;">
+                    Modificar
+                </a>                
+            </div>
+
         </div>
-
-        <!-- Stock -->
-        <div class="col-12 col-md-2 text-center">
-            <p>Stock</p>
-            <p class="fs-3 fw-bold">{{prod.stock}}</p>
-        </div>
-
-        <!-- Bodega -->
-        <div class="col-12 col-md-2 text-center">
-            <p class="">Bodega</p>
-            <p class="fs-3 fw-bold">{{prod.id_area.id_bodega.nombre_bodega}}</p>
-        </div>
-
-        <!-- Ubicación Bodega -->
-        <div class="col-12 col-md-2 text-center">
-            <p class="">Ubicación</p>
-            <p class="fs-3 fw-bold">{{prod.id_area.id_bodega.direccion}}</p>
-        </div>
-
-        <!-- Botón Despachar -->
-        <div class="col-12 col-md-2 text-center d-flex align-items-center justify-content-center">
-            <input type="hidden" name="id_prod" value="{{ prod.id_producto }}">
-            <input type="hidden" name="rut_cli" value="{{ prod.rut_id}}">
-            <button type="submit" class="btn fw-bold text-white mb-2 border-dark mb-3 border-2 rounded-0" style="background-color: #957755;">
-                <img src="/static/img/caja_despachar.png" alt="Icono" style="width: 30px; height: 30px; margin-right: 5px;"> 
-                Despachar
-            </button>
-        </div>
-
-    </div>
-</form>
-{% endfor %}
-
-
+    </form>
+    {% endfor %}
+    {% endif %}
+    
 </div>
+{% if errorProd %}
+<script>
+    errorProd("{{ error_message }}");
+</script>
+{% elif exitoProd %}
+<script>
+    exitoProd("{{ exito_message }}","{{title}}");
+</script>
+{% elif exitoDesp %}
+<script>
+    exitoDesp("{{ exito_message }}");
+</script>
+{% endif %}
+<script>
+    function eliminarProd(nombre_prod, id) {
+        Swal.fire({
+        title: 'Desea eliminar el producto ' + nombre_prod + '?',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            location.href = '/eliminar_producto/' + id + '/';
+            Swal.fire({
+                icon: 'success',
+                title: 'Producto Eliminado',
+                text: message,
+                showConfirmButton: false,
+                timer: 2500
+            })
+        }
+        })
 
-
+    }
+</script>
 {% endblock %}

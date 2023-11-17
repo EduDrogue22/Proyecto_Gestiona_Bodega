@@ -136,3 +136,12 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'error',
 }
+
+#Auth user
+AUTH_USER_MODEL = 'BodegaApp.Usuario'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/')

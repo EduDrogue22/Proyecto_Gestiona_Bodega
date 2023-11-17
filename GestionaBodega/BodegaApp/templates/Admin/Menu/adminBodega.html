@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Admin Bodega
 {% endblock %}
 {% block content %}
 
@@ -33,7 +33,7 @@
         <th>{{reg.id_bodega}}</th>
         <th>{{reg.nombre_bodega}}</th>
         <th>{{reg.direccion}}</th>
-        <th>{{reg.id_tp_bodega }}</th>
+        <th>{{reg.id_tp_bodega.nom_tipo_bodega }}</th>
         <th>
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
           <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_bodega }}')">

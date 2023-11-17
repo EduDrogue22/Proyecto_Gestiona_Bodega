@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Admin Cliente
 {% endblock %}
 {% block content %}
 
@@ -41,7 +41,7 @@
           <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.rut }}')">
             <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
           </button>
-          <button class="btn btn-warning" type="button">
+          <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.rut }}')">
             <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
           </button>
         </div>

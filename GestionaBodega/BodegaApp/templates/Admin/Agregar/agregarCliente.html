@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Agregar Cliente
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
@@ -13,7 +13,7 @@
         <div class="mb-2">
             <form action="{% url 'AGRECLIENTE' %}" method="POST" id="form" onsubmit="return validarCliente(event)">
                 {% csrf_token %}
-                 <script>
+                <script>
                     {% if error_message %}
                     Swal.fire({
                         icon: 'error',
@@ -60,13 +60,13 @@
                     <select class="form-select" aria-label="Default select example" id="selectSucursal"
                     name="selectSucursal">
                         {% for sucursales in sucursal %}
-                        <option value="{{ sucursales.id_sucursal }}">{{ sucursales.nombre_sucursal }}</option>
+                        <option value="{{ sucursales.id_sucursal }}">{{ sucursales.nombre_sucursal }} - {{sucursales.rut_empresa.nombre_empresa}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
                     <label for="selectBodega">Selecciona bodega:</label>
-                     <select class="form-select" aria-label="Default select example" id="selectBodega"
+                    <select class="form-select" aria-label="Default select example" id="selectBodega"
                         name="selectBodega">
                         {% for bodega in bodega %}
                         <option value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>

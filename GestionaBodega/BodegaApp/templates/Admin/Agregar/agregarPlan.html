@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Agregar Plan
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
@@ -39,7 +39,15 @@
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="capacidad" id="capacidad" placeholder="Ingrese capacidad m3" autofocus>
                 </div>
-
+                <div class="mb-2 form-input">
+                    <label for="selectBodega">Selecciona bodega:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectBodega"
+                        name="selectBodega">
+                        {% for bodega in bodega %}
+                        <option value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
                     <a href="{% url 'ADMPLAN' %}"><button class="btn btn-danger btn-lg me-md-5"
                             type="button">Cancelar</button></a>

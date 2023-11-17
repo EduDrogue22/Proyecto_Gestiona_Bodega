@@ -3,6 +3,9 @@ var formatoCorreo = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 var formatoRut = /^(\d{7,8}-[0-9Kk])$/;
 var formatoNombre = /^[A-Za-zñÑ\s]+$/;
 
+// Declarar la variable validacionCorrecta
+var validacionCorrecta = true;
+
 function error(message){
     Swal.fire({
         titleText: "Error",
@@ -21,6 +24,61 @@ function exito(message){
     })
 }
 
+function exitoLogin(message, id_usuario) {
+    Swal.fire({
+        titleText: "Iniciando Sesion",
+        text: message,
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2500
+    }).then(() => {
+        if (id_usuario == 1) {
+            window.location.href = '/inicio';
+        }
+        else if (id_usuario == 2) {
+            window.location.href = '/home_colab';
+        }
+        else{
+            window.location.href = '/menuAdmin';
+        }
+    });
+}
+
+
+function errorProd(message){
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: message,
+        confirmButtonText: 'Volver'
+      })
+}
+
+function exitoProd(message, title){
+  Swal.fire({
+      icon: 'success',
+      title: title,
+      text: message,
+      showConfirmButton: false,
+      timer: 2000
+    }).then(() => {
+        window.location.href = '/producto';
+      });
+}
+
+function exitoDesp(message, title){
+    Swal.fire({
+        icon: 'success',
+        title: title,
+        text: message,
+        showConfirmButton: false,
+        timer: 2000
+      }).then(() => {
+          window.location.href = '/despacho';
+        });
+  }
+
+// Validar agregar perfil de usuario Admin
 function validarPerfil(event) {
     event.preventDefault(); // Evitar el envío automático del formulario
 
@@ -59,117 +117,74 @@ function validarPerfil(event) {
         Swal.fire({
             icon: 'success',
             title: 'Éxito',
-            text: 'Perfil de usuario agregado exitosamente',
+            showConfirmButton: false,
+            text: '',
         });
 
         // Agregar un retraso de 2 segundos antes de enviar el formulario
-        setTimeout(function() {
+        setTimeout(function () {
             event.target.submit(); // Envía el formulario manualmente después del retraso
-        }, 3000); // 2000 milisegundos = 2 segundos
+        }, 2000);
     }
 }
 
-var validacionCorrecta = true;
-function validarUsuarioCliente(event) {
+// Validar agregar plan Admin
+function validarPlan(event) {
     event.preventDefault(); // Evitar el envío automático del formulario
 
-    var primer_nombre = document.getElementById("txtPrimerNombre").value;
-    var apellido_paterno = document.getElementById("txtApellidoPaterno").value;
-    var apellido_materno = document.getElementById("txtApellidoMaterno").value;
-    var rut = document.getElementById("numRut").value;
-    var correo = document.getElementById("txtCorreo").value;
-    var contrasena = document.getElementById("txtContrasena").value;
-    var rept_contrasena = document.getElementById("txtReptContrasena").value;
+    var nombrePlan = document.getElementById("nombre_plan").value;
+    var costoPlan = document.getElementById("costo").value;
+    var cantAnaquelesPlan = document.getElementById("cant_anaqueles").value;
+    var capacidadPlan = document.getElementById("capacidad").value;
 
-    if (primer_nombre == "" || primer_nombre == null) {
+    if (nombrePlan == "" || nombrePlan == null || costoPlan == "" || costoPlan == null ||
+        cantAnaquelesPlan == "" || cantAnaquelesPlan == null || capacidadPlan == "" || capacidadPlan == null) {
         Swal.fire({
             icon: 'warning',
             title: 'Advertencia',
-            text: 'El primer nombre no debe estar en blanco',
+            text: 'Todos los campos son obligatorios',
         });
         validacionCorrecta = false;
-    } else if (apellido_paterno == "" || apellido_materno == null) {
+    } else if (nombrePlan.length < 3) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'El apellido paterno no debe estar en blanco.',
+            text: 'Nombre de plan muy corto',
         });
         validacionCorrecta = false;
-    } else if (apellido_materno == "" || apellido_materno == null) {
+    } else if (nombrePlan.length > 30) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'El apellido materno no debe estar en blanco.',
+            text: 'Nombre de plan muy largo',
         });
         validacionCorrecta = false;
-    } else if (primer_nombre.trim().length == 0) {
+    } else if (nombrePlan.trim().length == 0) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'El primer nombre tiene solamente espacios en blanco',
+            text: 'El nombre del plan tiene solamente espacios en blanco',
         });
         validacionCorrecta = false;
-    } else if (apellido_paterno.trim().length == 0) {
+    } else if (costoPlan < 0 || costoPlan > 9999999999) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'El apellido paterno tiene solamente espacios en blanco',
+            text: 'El costo del plan ingresado no valido'
         });
         validacionCorrecta = false;
-    } else if (apellido_materno.trim().length == 0) {
+    } else if (cantAnaquelesPlan < 0 || cantAnaquelesPlan > 9999) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'El apellido materno tiene solamente espacios en blanco',
+            text: 'La cantidad de anaqueles ingresados no validos'
         });
         validacionCorrecta = false;
-    } else if (rut == "" || rut == null) {
+    } else if (capacidadPlan < 0 || capacidadPlan > 999) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'El rut no debe estar en blanco.',
-        });
-        validacionCorrecta = false;
-    } else if (rut.length > 11) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'El rut es demasiado largo.',
-        });
-        validacionCorrecta = false;
-    } else if (rut.length < 8) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'El rut es corto.',
-        });
-        validacionCorrecta = false;
-    } else if (rut.trim().length == 0) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'El rut tiene solamente espacios en blanco',
-        });
-        validacionCorrecta = false;
-    } else if (correo == "" || correo == null) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'El correo no debe estar en blanco.',
-        });
-        validacionCorrecta = false;
-    } else if (correo.trim().length == 0) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'El correo tiene solamente espacios en blanco',
-        });
-        validacionCorrecta = false;
-    } else if (contrasena != rept_contrasena) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'La contraseña no es similar.',
+            text: 'La capacidad ingresada no valida'
         });
         validacionCorrecta = false;
     } else {
@@ -177,12 +192,671 @@ function validarUsuarioCliente(event) {
         Swal.fire({
             icon: 'success',
             title: 'Éxito',
-            text: 'Perfil de usuario agregado exitosamente',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 3 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+}
+
+// Validar agregar Empresa Admin
+function validarEmpresas(event) {
+
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var nombreEmpresa = document.getElementById("nombre_empresa").value;
+    var rutEmpresa = document.getElementById("rut_emp").value;
+    var desEmpresa = document.getElementById("descrip_emp").value;
+
+    if (nombreEmpresa == "" || nombreEmpresa == null || rutEmpresa == "" || rutEmpresa == null
+        || desEmpresa == "" || desEmpresa == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (nombreEmpresa.length < 1) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de empresa muy corto',
+        });
+        validacionCorrecta = false;
+    } else if (nombreEmpresa.length > 50) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de empresa muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (nombreEmpresa.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El nombre de la empresa tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else if (!formatoRut.test(rutEmpresa)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'RUT ingresado no válido'
+        });
+        validacionCorrecta = false;
+    } else if (desEmpresa.length < 5) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Descripción de empresa muy corto',
+        });
+        validacionCorrecta = false;
+    } else if (desEmpresa.length > 100) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Descripción de empresa muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (desEmpresa.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'La descripción de la empresa tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 3 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+}
+
+// Validar agregar prodcuto admin
+function validarProducto(event) {
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var nombreProducto = document.getElementById("nombre_pro").value;
+    var stockProducto = document.getElementById("stock").value;
+
+    if (nombreProducto == "" || nombreProducto == null || stockProducto == "" || stockProducto == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (nombreProducto.length < 2) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de producto muy corto',
+        });
+        validacionCorrecta = false;
+    } else if (nombreProducto.length > 50) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de producto muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (nombreProducto.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El nombre del producto tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else if (stockProducto < 0 || stockProducto > 999999999) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El stock ingresado no es valido'
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 3 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+}
+
+// Validar agregar sucursal admin
+function validarSucursal(event) {
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var nombreSucursal = document.getElementById("nombre_sus").value;
+    var direccionSucursal = document.getElementById("direccion_sus").value;
+
+    if (nombreSucursal == "" || nombreSucursal == null || direccionSucursal == "" || direccionSucursal == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (nombreSucursal.length < 3) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de sucursal muy corto',
+        });
+        validacionCorrecta = false;
+    } else if (nombreSucursal.length > 50) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de sucursal muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (nombreSucursal.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El nombre de la sucursal tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else if (direccionSucursal.length < 5) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección muy corta',
+        });
+        validacionCorrecta = false;
+    } else if (direccionSucursal.length > 100) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (direccionSucursal.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
         });
 
         // Agregar un retraso de 2 segundos antes de enviar el formulario
-        setTimeout(function() {
+        setTimeout(function () {
             event.target.submit(); // Envía el formulario manualmente después del retraso
-        }, 3000); // 2000 milisegundos = 2 segundos
+        }, 2000);
+    }
+
+}
+
+// Validar agregar bodega admin
+function validarBodega(event) {
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var nombreBodega = document.getElementById("nombre_bod").value;
+    var direccionBodega = document.getElementById("direccion_bod").value;
+
+    if (nombreBodega == "" || nombreBodega == null || direccionBodega == "" || direccionBodega == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (nombreBodega.length < 3) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de bodega muy corto',
+        });
+        validacionCorrecta = false;
+    } else if (nombreBodega.length > 70) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de sucursal muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (nombreBodega.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El nombre de la bodega tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else if (direccionBodega.length < 5) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección muy corta',
+        });
+        validacionCorrecta = false;
+    } else if (direccionBodega.length > 70) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (direccionBodega.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 3 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+
+}
+
+// Validar agregar área bodega admin
+function validarAreaBodega(event) {
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var sectorBodega = document.getElementById("sector_area").value;
+    var anaquelesBodega = document.getElementById("anaqueles_area").value;
+
+    if (sectorBodega == "" || sectorBodega == null || anaquelesBodega == "" || anaquelesBodega == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (sectorBodega.length > 4) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Nombre de sector muy largo',
+        });
+        validacionCorrecta = false;
+    } else if (sectorBodega.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El nombre del sector tiene solamente espacios en blanco',
+        });
+        validacionCorrecta = false;
+    } else if (anaquelesBodega < 0 || anaquelesBodega > 999) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'La cantidad de anaqueles no es valida'
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 2 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+
+}
+
+// Calcular la fecha mínima (1 de enero de 1900) y la edad mínima (18 años)
+var fechaMinima = new Date('1900-01-01');
+var edadMinima = 18;
+
+// Obtener la fecha actual
+var fechaActual = new Date();
+
+function validarCliente(event) {
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var primerNombe = document.getElementById("p_nombre_cli").value;
+    var segundoNombre = document.getElementById("s_nombre_cli").value;
+    var apellidoPaterno = document.getElementById("ap_apellido_cli").value;
+    var apellidoMaterno = document.getElementById("am_apellido_cli").value;
+    var rutCliente = document.getElementById("rut_cli").value;
+    var correoCliente = document.getElementById("mail_cli").value;
+    var fechaNacimiento = document.getElementById("fecha_nac").value;
+    var direccion = document.getElementById("direccion_cli").value;
+    var passc1 = document.getElementById("pass_cli").value;
+    var passc2 = document.getElementById("pass_cli_re").value;
+
+    // Obtener la fecha actual
+    var fechaNac = new Date(fechaNacimiento);
+
+    // Calcular la edad del usuario
+    var edadUsuario = fechaActual.getFullYear() - fechaNac.getFullYear();
+
+    if (primerNombe == "" || primerNombe == null || segundoNombre == "" || segundoNombre == null
+        || apellidoPaterno == "" || apellidoPaterno == null || apellidoMaterno == "" || apellidoMaterno == null
+        || correoCliente == "" || correoCliente == null || fechaNacimiento == "" || fechaNacimiento == null
+        || direccion == "" || direccion == null || passc1 == "" || passc1 == null || passc2 == "" || passc2 == null
+        || rutCliente == "" || rutCliente == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (primerNombe.length < 1 || primerNombe.length > 50 || primerNombe.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Primer nombre no valido',
+        });
+        validacionCorrecta = false;
+    } else if (segundoNombre.length < 1 || segundoNombre.length > 50 || segundoNombre.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Segundo nombre no valido',
+        });
+        validacionCorrecta = false;
+    } else if (apellidoPaterno.length < 1 || apellidoPaterno.length > 50 || apellidoPaterno.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido paterno no valido',
+        });
+        validacionCorrecta = false;
+    } else if (apellidoMaterno.length < 1 || apellidoMaterno.length > 50 || apellidoMaterno.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido paterno no valido',
+        });
+        validacionCorrecta = false;
+    } else if (!formatoRut.test(rutCliente)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'RUT ingresado no válido'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoCorreo.test(correoCliente)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Correo ingresado no válido'
+        });
+        validacionCorrecta = false;
+    } else if (fechaNac < fechaMinima || edadUsuario < edadMinima) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Fecha de nacimiento no válido'
+        });
+        validacionCorrecta = false;
+    } else if (direccion.length < 3 || direccion.length > 100 || direccion.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Dirección no valida',
+        });
+        validacionCorrecta = false;
+    } else if (passc1.length < 8 || passc2.length < 8) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Contraseña muy corta',
+        })
+        return false;
+    } else if (passc1 != passc2) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Las contraseñas deben ser iguales',
+
+        })
+        return false;
+    } else if (!formatoNombre.test(primerNombe)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Primer nombre ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoNombre.test(segundoNombre)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Segundo nombre ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoNombre.test(apellidoMaterno)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido materno ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoNombre.test(apellidoPaterno)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido paterno ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 2 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+}
+
+function validarEmpleado(event) {
+    event.preventDefault();
+
+    var primerNombe = document.getElementById("p_nombre_emp").value;
+    var segundoNombre = document.getElementById("s_nombre_emp").value;
+    var apellidoPaterno = document.getElementById("ap_apellido_emp").value;
+    var apellidoMaterno = document.getElementById("am_apellido_emp").value;
+    var rutEmp = document.getElementById("rut_emp").value;
+    var correoEmp = document.getElementById("mail_emp").value;
+    var pass1 = document.getElementById("pass_emp").value;
+    var pass2 = document.getElementById("pass_emp_re").value;
+
+    if (primerNombe == "" || primerNombe == null || segundoNombre == "" || segundoNombre == null
+        || apellidoPaterno == "" || apellidoPaterno == null || apellidoMaterno == "" || apellidoMaterno == null
+        || correoEmp == "" || correoEmp == null || pass1 == "" || pass1 == null || pass2 == "" || pass2 == null
+        || rutEmp == "" || rutEmp == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (primerNombe.length < 1 || primerNombe.length > 50 || primerNombe.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Primer nombre no valido',
+        });
+        validacionCorrecta = false;
+    } else if (segundoNombre.length < 1 || segundoNombre.length > 50 || segundoNombre.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Segundo nombre no valido',
+        });
+        validacionCorrecta = false;
+    } else if (apellidoPaterno.length < 1 || apellidoPaterno.length > 50 || apellidoPaterno.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido paterno no valido',
+        });
+        validacionCorrecta = false;
+    } else if (apellidoMaterno.length < 1 || apellidoMaterno.length > 50 || apellidoMaterno.trim().length == 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido paterno no valido',
+        });
+        validacionCorrecta = false;
+    } else if (!formatoRut.test(rutEmp)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'RUT ingresado no válido'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoCorreo.test(correoEmp)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Correo ingresado no válido'
+        });
+        validacionCorrecta = false;
+    } else if (pass1.length < 8 || pass2.length < 8) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Contraseña muy corta',
+        })
+        return false;
+    } else if (pass1 != pass2) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Las contraseñas deben ser iguales',
+
+        })
+        return false;
+    } else if (!formatoNombre.test(primerNombe)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Primer nombre ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoNombre.test(segundoNombre)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Segundo nombre ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoNombre.test(apellidoMaterno)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido materno ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else if (!formatoNombre.test(apellidoPaterno)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Apellido paterno ingresado no válido, tiene números'
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 2 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
+    }
+
+}
+
+// Validar agregar perfil de usuario Admin
+function validarDespacho(event) {
+    event.preventDefault(); // Evitar el envío automático del formulario
+
+    var Tentrega = document.getElementById("TEntrega").value;
+
+    if (Tentrega == "" || Tentrega == null) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Todos los campos son obligatorios',
+        });
+        validacionCorrecta = false;
+    } else if (Tentrega < 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Tiempo de Entrega tiene números negativos',
+        });
+        validacionCorrecta = false;
+    } else if (Tentrega > 999) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Tiempo de Entrega es demasiado largo',
+        });
+        validacionCorrecta = false;
+    } else {
+        // Los datos son válidos, mostrar SweetAlert de éxito
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            showConfirmButton: false,
+            text: '',
+        });
+
+        // Agregar un retraso de 2 segundos antes de enviar el formulario
+        setTimeout(function () {
+            event.target.submit(); // Envía el formulario manualmente después del retraso
+        }, 2000);
     }
 }

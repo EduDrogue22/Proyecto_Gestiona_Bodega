@@ -5,6 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Icono de Bodegón-->
+  <link rel="icon" href="/static/img/logo.png"/>
   <!-- Para título de la página -->
   <title>{% block titulo %}{% endblock %}</title>
   <link type="text/css" rel="stylesheet" href="{% static 'css/styleFormAdm.css' %}">
@@ -13,6 +15,8 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <!-- SweetAlert2 -->
   <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <!-- Validaciones scripts-->
+  <script src="{% static 'js/validaciones.js' %}"></script>
   {% block Stilos %}{% endblock %}
 </head>
 
@@ -32,15 +36,12 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'ENTREGAREPA' %}"><img src="/static/img/repa.png" alt="Inicio" width="60" height="50"><br>Entregas</a>
                   </li>
                   <li class="nav-item text-center" style="margin-left: 30px;">
-                    <a class="nav-link" href="{% url 'IMPRIMIRREPA' %}"><img src="/static/img/pdfMenu.png" alt="" width="55" height="50"><br>Hoja de entrega de despacho</a>
+                    <a class="nav-link" href="{% url 'REPOPDF' %}"><img src="/static/img/pdfMenu.png" alt="" width="55" height="50"><br>Hoja de entrega de despacho</a>
                   </li>
                   </ul>
                   <ul class="navbar-nav me-2 mb-2 mb-lg-0">
-                    <li class="nav-item text-center mt-2" style="margin-left: 30px;">
-                        <a class="nav-link" href=""><img src="/static/img/userPerfil.png" alt="" width="30" height="30" class="me-2">Perfil</a>
-                    </li>
                     <li class="nav-item text-center" style="margin-left: 30px;">
-                        <a class="nav-link" href=""><img src="/static/img/logout.png" alt="" width="50" height="50"><button class="btn btn-info">Cerrar Sesión</button></a>
+                        <a class="nav-link" href="{% url 'logout' %}"><img src="/static/img/logout.png" alt="" width="50" height="50"><button class="btn btn-info">Cerrar Sesión</button></a>
                     </li>
                   </ul>
               </div>

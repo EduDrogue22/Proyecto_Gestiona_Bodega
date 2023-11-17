@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Agregar Sucursal
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
@@ -13,7 +13,7 @@
         <div class="mb-2">
             <form action="{% url 'AGRESUCU' %}" method="POST" id="form" onsubmit="return validarSucursal(event) ">
                 {% csrf_token %}
-                 <script>
+                <script>
                     {% if mensaje %}
                         Swal.fire({
                             title: 'Error al guardar',
@@ -34,8 +34,8 @@
                 <div class="mb-2 form-input">
                     <label for="selectEmpresa">Selecciona una empresa:</label>
                     <select class="form-select" aria-label="Default select example" id="selectEmpresa" name="selectEmpresa">
-                        {% for empresa in empresas %}
-                        <option value="{{ empresa.rut_empresa }}">{{ empresa.nombre_empresa }}</option>
+                        {% for empresas in empresas %}
+                        <option value="{{ empresas.rut_empresa }}">{{ empresas.nombre_empresa }}</option>
                         {% endfor %}
                     </select>
                 </div>

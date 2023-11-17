@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-
+Modif. Plan
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
@@ -11,10 +11,12 @@
 <section class="d-flex justify-content-center " id="formulario">
     <div class="card col-sm-6 p-3" style="background-color: gray;">
         <div class="mb-2">
-            <form action="{% url 'MODIFPLAN' planes.id_plan %}" method="POST" id="form" onsubmit="return validarPlan(event)">
+            <form action="{% url 'MODIFPLAN' planes.id_plan %}" method="POST" id="form"
+                onsubmit="return validarPlan(event)">
                 {% csrf_token %}
                 <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
                 <input class="colum" type="hidden" name="txtId" id="txtId" value="{{planes.id_plan}}">
+               
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="nombre_plan" id="nombre_plan" placeholder="Ingrese nombre plan" autofocus
@@ -22,8 +24,7 @@
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="costo" id="costo" placeholder="Ingrese costo" autofocus
-                        value="{{planes.valor_plan}}">
+                        name="costo" id="costo" placeholder="Ingrese costo" autofocus value="{{planes.valor_plan}}">
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
@@ -35,14 +36,26 @@
                         name="capacidad" id="capacidad" placeholder="Ingrese capacidad m3" autofocus
                         value="{{planes.capacidad_anaquel}}">
                 </div>
-
+                <div class="mb-2 form-input">
+                    <label for="selectBodega">Selecciona bodega:</label>
+                    <select class="form-select" aria-label="Default select example" id="selectBodega"
+                        name="selectBodega">
+                        {% for bodega in bodega %}
+                        {% if dtPlan.id_bodega.nombre_bodega == bodega.nombre_bodega %}
+                        <option selected value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>
+                        {% else %}
+                        <option value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
                     <a href="{% url 'ADMPLAN' %}"><button class="btn btn-danger btn-lg me-md-5"
                             type="button">Cancelar</button></a>
                     <button class="btn btn-success btn-lg" type="submit">Confirmar</button>
                 </div>
-        </form>
-    </div>
+            </form>
+        </div>
     </div>
 </section>
 {% endblock %}
