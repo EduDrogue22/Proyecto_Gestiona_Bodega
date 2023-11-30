@@ -26,24 +26,26 @@
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Ninth navbar example">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- Elimina el contenedor 'container' aquí -->
-    <a class="navbar-brand" href="{% url 'MENUADMIN' %}">
-      <img src="/static/img/logo.png" class="rounded float-end" alt="..." width="100%" height="50">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07XL"
-      aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'MENUADMIN' %}">
+        <img src="/static/img/logo.png" class="rounded float-end" alt="" width="100%" height="50">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07XL"
+        aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse justify-content-lg-end" id="navbarsExample07XL">
-      <!-- Cambia 'justify-content-md-end' a 'justify-content-lg-end' -->
-      <ul class="navbar-nav me-lg-2 mb-2 mb-lg-0">
-        <li class="nav-item text-center">
-          <a class="nav-link" href="{% url 'logout' %}"><img src="/static/img/logout.png" alt="" width="50" height="50"><button
-              class="btn btn-info">Cerrar Sesión</button></a>
-        </li>
-      </ul>
+      <div class="collapse navbar-collapse justify-content-lg-end" id="navbarsExample07XL">
+        <!-- Cambia 'justify-content-md-end' a 'justify-content-lg-end' -->
+        <ul class="navbar-nav me-lg-2 mb-2 mb-lg-0">
+          <li class="nav-item text-center">
+            <a class="nav-link" href="{% url 'logout' %}"><img src="/static/img/logout.png" alt="" width="50" height="50"><button
+                class="btn btn-info">Cerrar Sesión</button></a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 

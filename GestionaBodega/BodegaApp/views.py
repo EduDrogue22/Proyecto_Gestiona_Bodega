@@ -22,7 +22,6 @@ from .forms import *
 from .models import *
 import random
 import re
-import time
 from xhtml2pdf import pisa
 from django.http import FileResponse
 from django.template.loader import get_template
@@ -86,11 +85,12 @@ def login_view(request):
     context = {'exitoLogin': exitoLogin, 'error': error, 'message': message, 'id_usuario': id_usuario, 'template': template}
     return render(request, 'web/login.html', context)
 
-
+@login_required(login_url='/')
 def inicio(request):
     return render(request, 'web/home.html')
 
 #Prueba integración
+@login_required(login_url='/')
 def realizar_transaccion(request):
     # Definir los datos de la transacción (reemplaza estos valores con los tuyos)
     if request.method == 'POST':
@@ -117,6 +117,7 @@ def realizar_transaccion(request):
 
         return render(request, 'webpay/crear_transaccion.html', {'buy_order': buy_order, 'session_id': session_id, 'amount': amount, 'url': url, 'token': token, 'rut': rut, 'id_plan': id_plan})
 
+@login_required(login_url='/')
 def webpay_commit(request):
     # Obtiene el token de la respuesta de Transbank (debe extraerse de la respuesta de Transbank)
     try:
@@ -128,7 +129,6 @@ def webpay_commit(request):
         cliente = get_object_or_404(Cliente, rut = rut_cliente)
         plan_instance = get_object_or_404(Plan, pk = id_plan)
         bodega_instance = get_object_or_404(Bodega, pk = id_bodega_int)
-        usuario_cliente = Usuario.objects.get(rut = rut_cliente)
         usuario = Usuario.objects.get(rut = request.user.rut)
         tx = Transaction(WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, IntegrationType.TEST))
         resp = tx.commit(token)
@@ -167,10 +167,12 @@ def webpay_commit(request):
         
     return render(request, 'webpay/commit.html', {'token': token, 'resp': resp})
 
+@login_required(login_url='/')
 def webpay_refund(request):
 
     return render(request, 'webpay/anulacion.html')
 
+@login_required(login_url='/')
 def logout_view(request):
     logout(request)
     return redirect('/')
@@ -336,17 +338,19 @@ def admSucursal(request):
     contexto = {"sucursales": sucursales}
     return render(request,'Admin/Menu/adminSucursal.html', contexto)
 
+@login_required(login_url='/')
 def plan(request):
     planes = DetallePlan.objects.select_related('id_plan','id_bodega').all()
     usuario = request.user
-    plan_contratado = None
+    rut = usuario.rut
+    plan_contratado = Pago.objects.filter(rut=rut).values_list('id_plan', flat=True)
+    detalle_planes_contratados = DetallePlan.objects.filter(id_plan__in=plan_contratado, id_bodega=usuario.id_bodega).values_list('id_plan', flat = True)
+    detalle_planes_contratados_bodega = DetallePlan.objects.filter(id_plan__in=plan_contratado, id_bodega=usuario.id_bodega).values_list('id_bodega', flat = True)
 
-    if usuario.id_bodega and usuario.id_bodega.detalleplan_set.exists():
-        detalle_plan_contratado = usuario.id_bodega.detalleplan_set.first()
-        plan_contratado = detalle_plan_contratado.id_bodega
-    context = {'planes':planes, 'plan_contratado': plan_contratado}
+    context = {'planes':planes, 'detalle_planes_contratados': detalle_planes_contratados, 'detalle_planes_contratados_bodega': detalle_planes_contratados_bodega}
     return render(request,'web/plan.html',context)
 
+@login_required(login_url='/')
 def despacho(request,):
     user = request.user
     rut = user.rut
@@ -364,6 +368,7 @@ def despacho(request,):
 
     return render(request,'web/despacho.html',context)
 
+@login_required(login_url='/')
 def producto(request):
     user = request.user
     rut = user.rut
@@ -372,7 +377,6 @@ def producto(request):
 
     productos = Producto.objects.select_related('rut__rut','id_area').filter(id_area__id_bodega=id_bodega,rut=rut)
     productos_colab = Producto.objects.select_related('rut__rut','id_area').filter(id_area__id_bodega=id_bodega)
-
 
     if tipo_usuario == 1:
         template_name = 'web/base.html'
@@ -648,6 +652,7 @@ def despachar(request):
 
     return render (request,'web/producto.html',contexto)
 
+@login_required(login_url='/')
 def buscar_despacho(request):
     user = request.user
     rut = user.rut
@@ -1464,18 +1469,21 @@ def eliminarProductoAdmin(request, id_producto):
 
     return redirect('ADMPRODUCTO')
 
+@login_required(login_url='/')
 def entregasRepa(request):
     despacho = Despacho.objects.all()
     contexto = {"despacho": despacho}
     print(despacho)
     return render(request, 'repartidor/entregas.html',contexto)
 
+@login_required(login_url='/')
 def plantillaRepaCambio(request, id_despacho):
     despacho = Despacho.objects.get(id_despacho=id_despacho)
     opciones_estado = Despacho.ESTADO_CHOICES
     contexto = {"despacho": despacho, 'opEst': opciones_estado}
     return render(request, 'repartidor/plantillaCambioEstado.html', contexto)
 
+@login_required(login_url='/')
 def imprimirRepa(request):
     return render(request,'repartidor/imprimir.html')
 
@@ -1537,10 +1545,12 @@ def modifPlan(request, plan_id):
     except Plan.DoesNotExist:
         # Maneja el caso en el que no se encuentre el plan con el ID proporcionado
         return render(request, 'Admin/error.html', {"mensaje": "El plan no existe"})
-    
+
+@login_required(login_url='/')
 def errorMod(request):
     return render(request,'Admin/error.html')
 
+@login_required(login_url='/')
 def modifDespacho(request, id_despacho):
     try:
         despacho = Despacho.objects.get(pk=id_despacho)
@@ -1563,7 +1573,8 @@ def modifDespacho(request, id_despacho):
     except Despacho.DoesNotExist:
         # Maneja el caso en el que no se encuentre el perfil con el ID proporcionado
         return render(request, 'Admin/error.html', {"mensaje": "El despacho no existe"})
-    
+
+@login_required(login_url='/') 
 def plantillaPdf_ent(request):
     user = request.user
     rut = user.rut
@@ -1591,7 +1602,8 @@ def plantillaPdf_ent(request):
         return response
     else:
         return HttpResponse('Error al generar el PDF', status=500)
-    
+
+@login_required(login_url='/')    
 def plantillaPdf_Desp(request, id_sucursal):
 
     #productos_colab = Producto.objects.select_related('rutrut','id_area').filter(id_areaid_bodega=id_bodega)
@@ -1619,7 +1631,8 @@ def plantillaPdf_Desp(request, id_sucursal):
 
     else:
         return HttpResponse('Error al generar el PDF', status=500)
-    
+
+@login_required(login_url='/')
 def reporte_desp(request):
     sucursales = Sucursal.objects.all()
     user = request.user
@@ -1632,6 +1645,7 @@ def reporte_desp(request):
     contexto = {'sucursales':sucursales, 'template_name':template_name}
     return render(request, 'jefe_bodega/reportesDespacho.html',contexto)
 
+@login_required(login_url='/')
 def reportes_pdf(request):
     user = request.user
     rut = user.rut
@@ -1642,9 +1656,11 @@ def reportes_pdf(request):
         template_name = 'repartidor/baseRepar.html'
     return render(request, 'jefe_bodega/reporte_pdf.html', {'template_name':template_name})
 
+@login_required(login_url='/')
 def entregas(request):
     return render(request, 'repartidor/entregas.html')
 
+@login_required(login_url='/')
 def incioColab(request):
     user = request.user
     rut = user.rut

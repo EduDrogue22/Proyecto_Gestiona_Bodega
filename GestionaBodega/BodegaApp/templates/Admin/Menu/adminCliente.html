@@ -1,12 +1,12 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-Admin Cliente
+Admin Representante
 {% endblock %}
 {% block content %}
 
 <div style="text-align: center; color: aliceblue; margin-top:2%">
-  <h1>Administrar Cliente</h1>
+  <h1>Administrar Representante</h1>
 </div>
 
 <div class="container">
@@ -24,7 +24,7 @@ Admin Cliente
         <th>Nombre Completo</th>
         <th>Correo</th>
         <th>Dirección</th>
-        <th>Fecha Nacimiento</th>
+        <th>Empresa y sucursal</th>
         <th>Operaciones</th>
       </tr>
     </thead>
@@ -35,7 +35,7 @@ Admin Cliente
         <th>{{reg.primer_nombre}} {{reg.segundo_nombre}} {{reg.apellido_paterno}}</th>
         <th>{{reg.correo}}</th>
         <th>{{reg.cliente.direccion }}</th>
-        <th>{{reg.cliente.fecha_nac}}</th>
+        <th>{{reg.cliente.id_sucursal.rut_empresa.nombre_empresa}} - {{reg.cliente.id_sucursal.nombre_sucursal}}</th>
         <th>
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
           <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.rut }}')">
