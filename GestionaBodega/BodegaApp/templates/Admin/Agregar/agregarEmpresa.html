@@ -25,16 +25,16 @@ Agregar Empresa
                 </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa" autofocus>
+                        name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="rut_emp" id="rut_emp" placeholder="Ingrese rut: 12345678-k" autofocus>
+                        name="rut_emp" id="rut_emp" placeholder="Ingrese rut: 12345678-k *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label>Descripción</label>
+                    <label>Descripción *</label>
                     <textarea type="text" rows="8" cols="25" class="form-control" name="descrip_emp" id="descrip_emp"
-                        autofocus></textarea>
+                        autofocus required></textarea>
                 </div>   
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
                     <a href=" {% url 'ADMEMPRESA' %}">

@@ -33,28 +33,28 @@ Perfil
 
         <div class="col-auto col-md-3 mt-4">
             <p class="text-dark text-center p-2" style="background: #FFF4F4;">Plan Contratado</p>
-            {% for plan in plan_contratado %}
+            {% if plan_contratado %}
             <div class="col-12 col-md-12 border border-2 border-info" style="background-color: #D9D9D9;">
-                <p class="text-center text-light mt-3 fs-4 text-dark">{{plan.id_plan.nombre_plan}}</p>
+                <p class="text-center text-light mt-3 fs-4 text-dark">{{plan_contratado.id_plan.nombre_plan}}</p>
                 <div class="ms-3 col-11 col-md-11 border border-dark border-2 mb-3"
                     style="background-color: #FEB75E; height: 400px;">
-                    <p class="text-center text-light mt-2 fs-4 text-dark">{{plan.id_plan.valor_plan}}</p>
+                    <p class="text-center text-light mt-2 fs-4 text-dark">{{plan_contratado.id_plan.valor_plan}}</p>
                     <p class="text-start text-light ms-1 mt-5 fs-4 text-dark">Anaqueles:
-                        {{plan.id_plan.cant_anaquel_plan}}</p>
+                        {{plan_contratado.id_plan.cant_anaquel_plan}}</p>
                     <p class="text-start text-light ms-1 mt-2 mb-5 fs-5 text-dark">Capacidad Anaquel:
-                        {{plan.id_plan.capacidad_anaquel}} productos</p>
+                        {{plan_contratado.id_plan.capacidad_anaquel}} productos</p>
                     {% for bod in bodega %}
                     <p class="text-start text-light ms-1 mt-2 mb-5 fs-5 text-dark">Bodega:
                         {{bod.nombre_bodega}}</p>
                     {% endfor %}
+
+                    {% else %}
+
+                    {% endif %}
                 </div>
             </div>
-            {% endfor %}
         </div>
-
     </div>
-
-
 </div>
 
 {% endblock %}

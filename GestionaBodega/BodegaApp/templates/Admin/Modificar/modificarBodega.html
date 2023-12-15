@@ -17,16 +17,16 @@ Modif. Bodega
                 <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_bod" id="nombre_bod" placeholder="Ingrese nombre bodega" autofocus
-                        value="{{bodega.nombre_bodega}}">
+                        name="nombre_bod" id="nombre_bod" placeholder="Ingrese nombre bodega *" autofocus
+                        value="{{bodega.nombre_bodega}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="direccion_bod" id="direccion_bod" placeholder="Ingrese dirección" autofocus
-                        value="{{bodega.direccion}}">
+                        name="direccion_bod" id="direccion_bod" placeholder="Ingrese dirección *" autofocus
+                        value="{{bodega.direccion}}" required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectTpBodega">Selecciona un tipo de bodega:</label>
+                    <label for="selectTpBodega">* Selecciona un tipo de bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectTpBodega"
                         name="selectTpBodega">
                         {% for tipo_bodega in tipoBodega %}

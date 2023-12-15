@@ -17,16 +17,16 @@ Modif. Sucursal
                 <input class="colum" type="hidden" name="txtId" id="txtId" value="{{sucursal.id_sucursal}}">
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_sus" id="nombre_sus" placeholder="Ingrese nombre de sucursal" autofocus
-                        value="{{sucursal.nombre_sucursal}}">
+                        name="nombre_sus" id="nombre_sus" placeholder="Ingrese nombre de sucursal *" autofocus
+                        value="{{sucursal.nombre_sucursal}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="direccion_sus" id="direccion_sus" placeholder="Ingrese dirección" autofocus
-                        value="{{sucursal.direccion}}">
+                        name="direccion_sus" id="direccion_sus" placeholder="Ingrese dirección *" autofocus
+                        value="{{sucursal.direccion}}" required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectEmpresa">Selecciona una empresa:</label>
+                    <label for="selectEmpresa">* Selecciona una empresa:</label>
                     <select class="form-select" aria-label="Default select example" id="selectEmpresa" name="selectEmpresa">
                         {% for empresa in empresas %}
                         {% if sucursal.rut_empresa.nombre_empresa == empresa.nombre_empresa %}

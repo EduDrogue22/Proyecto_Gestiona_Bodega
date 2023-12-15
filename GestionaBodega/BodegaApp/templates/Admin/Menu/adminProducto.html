@@ -76,11 +76,19 @@ Admin Producto
 
   {% if messages %}
     {% for message in messages %}
+      {% if message.tags == 'error' %}
         Swal.fire({
-            title: "{{ message.tags }}",
-            text: "{{ message }}",
-            icon: "{{ message.tags }}",
+          title: "{{ message.tags }}",
+          text: "{{ message }}",
+          icon: "error",
         });
+      {% else %}
+        Swal.fire({
+          title: "{{ message.tags }}",
+          text: "{{ message }}",
+          icon: "success",
+        });
+      {% endif %}
     {% endfor %}
   {% endif %}
 </script>

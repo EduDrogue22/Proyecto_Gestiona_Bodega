@@ -1,12 +1,12 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-Agregar Cliente
+Agregar Representante
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
 <div style="text-align: center; color: aliceblue;">
-    <h1>Agregar Cliente</h1>
+    <h1>Agregar Representante</h1>
 </div>
 <section class="d-flex justify-content-center " id="formulario">
     <div class="card col-sm-6 p-3" style="background-color: gray;">
@@ -24,39 +24,39 @@ Agregar Cliente
                 </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="p_nombre_cli" id="p_nombre_cli" placeholder="Ingrese primer nombre" autofocus>
+                        name="p_nombre_cli" id="p_nombre_cli" placeholder="Ingrese primer nombre *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="s_nombre_cli" id="s_nombre_cli" placeholder="Ingrese segundo nombre" autofocus>
+                        name="s_nombre_cli" id="s_nombre_cli" placeholder="Ingrese segundo nombre" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="ap_apellido_cli" id="ap_apellido_cli" placeholder="Ingrese apellido paterno" autofocus>
+                        name="ap_apellido_cli" id="ap_apellido_cli" placeholder="Ingrese apellido paterno *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="am_apellido_cli" id="am_apellido_cli" placeholder="Ingrese apellido materno" autofocus>
+                        name="am_apellido_cli" id="am_apellido_cli" placeholder="Ingrese apellido materno *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="rut_cli" id="rut_cli" placeholder="Ingrese su RUT" autofocus>
+                        name="rut_cli" id="rut_cli" placeholder="Ingrese su RUT *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="email" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="mail_cli" id="mail_cli" placeholder="Ingrese correo electrónico" autofocus>
+                        name="mail_cli" id="mail_cli" placeholder="Ingrese correo electrónico *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="floatingInput">Fecha de nacimiento</label>
+                    <label for="floatingInput">Fecha de nacimiento *</label>
                     <input type="date" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="fecha_nac" id="fecha_nac" autofocus>
+                        name="fecha_nac" id="fecha_nac" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="direccion_cli" id="direccion_cli" placeholder="Ingrese dirección" autofocus>
+                        name="direccion_cli" id="direccion_cli" placeholder="Ingrese dirección *" autofocus required>
                 </div>
                 <div class="selectSucursal">
-                    <label for="selectTpBodega">Selecciona sucursal:</label>
+                    <label for="selectTpBodega">* Selecciona sucursal:</label>
                     <select class="form-select" aria-label="Default select example" id="selectSucursal"
                     name="selectSucursal">
                         {% for sucursales in sucursal %}
@@ -65,7 +65,7 @@ Agregar Cliente
                     </select>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectBodega">Selecciona bodega:</label>
+                    <label for="selectBodega">* Selecciona bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectBodega"
                         name="selectBodega">
                         {% for bodega in bodega %}
@@ -75,11 +75,11 @@ Agregar Cliente
                 </div>
                 <div class="mb-2 form-input">
                     <input type="password" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="pass_cli" id="pass_cli" placeholder="Ingrese contraseña" autofocus>
+                        name="pass_cli" id="pass_cli" placeholder="Ingrese contraseña *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="password" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="pass_cli_re" id="pass_cli_re" placeholder="repetir contraseña" autofocus>
+                        name="pass_cli_re" id="pass_cli_re" placeholder="Repetir contraseña *" autofocus required>
                 </div>
                 <input class="colum" type="hidden" name="txtId" id="txtId" value="1">
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">

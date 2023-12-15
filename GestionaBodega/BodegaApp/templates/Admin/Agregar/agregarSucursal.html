@@ -25,17 +25,17 @@ Agregar Sucursal
                 </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_sus" id="nombre_sus" placeholder="Ingrese nombre de sucursal" autofocus>
+                        name="nombre_sus" id="nombre_sus" placeholder="Ingrese nombre de sucursal *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="direccion_sus" id="direccion_sus" placeholder="Ingrese dirección" autofocus>
+                        name="direccion_sus" id="direccion_sus" placeholder="Ingrese dirección *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectEmpresa">Selecciona una empresa:</label>
+                    <label for="selectEmpresa">* Selecciona una empresa:</label>
                     <select class="form-select" aria-label="Default select example" id="selectEmpresa" name="selectEmpresa">
-                        {% for empresas in empresas %}
-                        <option value="{{ empresas.rut_empresa }}">{{ empresas.nombre_empresa }}</option>
+                        {% for empresa in empresas %}
+                        <option value="{{ empresa.rut_empresa }}">{{ empresa.nombre_empresa }}</option>
                         {% endfor %}
                     </select>
                 </div>

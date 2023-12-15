@@ -25,22 +25,22 @@ Agregar Producto
                 </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus>
+                        name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="stock" id="stock" placeholder="Ingrese stock" autofocus>
+                        name="stock" id="stock" placeholder="Ingrese stock *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectCliente">Seleccione un cliente:</label>
+                    <label for="selectCliente">* Seleccione un representante de la empresa cliente:</label>
                     <select class="form-select" aria-label="Default select example" id="selectCliente" name="selectCliente">
                         {% for nom in clientes %}
-                        <option value="{{nom.rut}}">{{nom.primer_nombre}} {{nom.apellido_paterno}}</option>
+                        <option value="{{nom.rut}}">{{nom.primer_nombre}} {{nom.apellido_paterno}} - {{nom.cliente.id_sucursal.rut_empresa.nombre_empresa}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectSector">Selecciona un sector:</label>
+                    <label for="selectSector">* Selecciona un sector:</label>
                     <select class="form-select" aria-label="Default select example" id="selectSector" name="selectSector">
                         {% for area in areas %}
                         <option value="{{ area.id_area}}">{{area.sector}} - {{area.id_bodega.nombre_bodega}}</option>

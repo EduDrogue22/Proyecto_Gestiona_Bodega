@@ -13,7 +13,7 @@ Agregar Bodega
         <div class="mb-2">
             <form action="{% url 'AGREBODEGA' %}" method="POST" id="form" onsubmit="return validarBodega(event) ">
                 {% csrf_token %}
-                 <script>
+                <script>
                     {% if mensaje %}
                         Swal.fire({
                             title: 'Error al guardar',
@@ -25,14 +25,14 @@ Agregar Bodega
                 </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_bod" id="nombre_bod" placeholder="Ingrese nombre bodega" autofocus>
+                        name="nombre_bod" id="nombre_bod" placeholder="Ingrese nombre bodega *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="direccion_bod" id="direccion_bod" placeholder="Ingrese dirección" autofocus>
+                        name="direccion_bod" id="direccion_bod" placeholder="Ingrese dirección *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectTpBodega">Selecciona un tipo de bodega:</label>
+                    <label for="selectTpBodega">* Selecciona un tipo de bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectTpBodega"
                         name="selectTpBodega">
                         {% for tipo_bodega in tipoBodega %}

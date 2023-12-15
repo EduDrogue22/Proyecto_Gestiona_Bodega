@@ -57,7 +57,7 @@ urlpatterns = [
     path('reporte_pdf/', reportes_pdf, name='REPOPDF'),
     path('reporteDesp/', reporte_desp, name='REPODESP'),
     path('plantilla_pdf/', plantillaPdf_ent, name='PLTPDF'),
-   path('plantillaDesp_pdf/<int:id_sucursal>/', plantillaPdf_Desp, name='PLTDESP'),
+    path('plantillaDesp_pdf/<int:id_sucursal>/', plantillaPdf_Desp, name='PLTDESP'),
 
     path('agregarPerfil/',agrePerfil,name='AGREPERFIL'),
     path('agregarEmpresa/',agreEmpresa,name='AGREEMPRESA'),

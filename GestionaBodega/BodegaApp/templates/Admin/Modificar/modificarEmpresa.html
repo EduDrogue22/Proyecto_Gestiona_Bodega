@@ -15,18 +15,18 @@ Modif. Empresa
                 {% csrf_token %}
                 <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
                 <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                    name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa" autofocus
-                    value="{{ empresas.nombre_empresa }}">
+                    name="nombre_empresa" id="nombre_empresa" placeholder="Ingrese nombre empresa *" autofocus
+                    value="{{ empresas.nombre_empresa }}" required>
 
                 <div class="mb-2 form-input">
                     <input type="hidden" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="rut_emp" id="rut_emp" placeholder="Ingrese rut: 12345678-k" autofocus
-                        value="{{ empresas.rut_empresa }}">
+                        name="rut_emp" id="rut_emp" placeholder="Ingrese rut: 12345678-k *" autofocus
+                        value="{{ empresas.rut_empresa }}" required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label>Descripción</label>
-                    <textarea rows="8" cols="25" class="form-control" name="descrip_emp" id="descrip_emp"
-                        autofocus>{{ empresas.descripcion }}</textarea>
+                    <label>Descripción *</label>
+                    <textarea rows="8" cols="25" class="form-control" name="descrip_emp" id="descrip_emp" required
+                        autofocus>{{ empresas.descripcion }} </textarea>
                 </div>
 
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">

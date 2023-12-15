@@ -6,7 +6,7 @@ Modif. Perfil
 {% block content %}
 <div style="padding: 4%;"></div>
 <div style="text-align: center; color: aliceblue;">
-    <h1>Agregar Perfil de Usuario</h1>
+    <h1>Modificar Perfil de Usuario</h1>
 </div>
 <section class="d-flex justify-content-center" id="formulario">
     <div class="card col-sm-6 p-3" style="background-color: gray;">
@@ -17,8 +17,8 @@ Modif. Perfil
                 <input class="colum" type="hidden" name="txtId" id="txtId" value="{{perfiles.id_tp_colab}}">
                 <div class="mb-2 form-input nombre">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_perfil" id="nombre_perfil" placeholder="Ingrese nombre perfil" autofocus
-                        value="{{perfiles.nombre_colab}}">
+                        name="nombre_perfil" id="nombre_perfil" placeholder="Ingrese nombre perfil *" autofocus
+                        value="{{perfiles.nombre_colab}}" required>
                 </div>
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
                     <a href="{% url 'ADMPERFILES' %}">

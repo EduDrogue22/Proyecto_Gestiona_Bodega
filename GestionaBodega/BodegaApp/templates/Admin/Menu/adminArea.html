@@ -13,7 +13,8 @@ Admin Area
   <div class="container-fluid">
     <div class="d-flex justify-content-between" style="margin-bottom: 2%;">
       <div class="d-grid gap-2 d-md-block">
-        <a href="{% url 'AGREAREABODEGA' %}"><button class="btn btn-success" type="button"><img src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
+        <a href="{% url 'AGREAREABODEGA' %}"><button class="btn btn-success" type="button"><img
+              src="{% static 'img/icon/add.png' %}" style="max-width: 90%;">Agregar</button></a>
       </div>
     </div>
   </div>
@@ -29,7 +30,7 @@ Admin Area
       </tr>
     </thead>
     <tbody>
-    {% for reg in areas %}
+      {% for reg in areas %}
       <tr>
         <th>{{reg.id_area }}</th>
         <th>{{reg.sector}}</th>
@@ -38,14 +39,14 @@ Admin Area
         <th>{{reg.id_bodega.nombre_bodega}}</th>
         <th>
           <div class="d-grid gap-2 d-md-flex justify-content-md-star">
-          <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_area }}')">
+            <button class="btn btn-danger me-md-2" type="button" onclick="eliminar('{{ reg.id_area }}')">
               <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
-          </button>
-          <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.id_area }}')">
-            <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
-          </button>
-        </div>
-        
+            </button>
+            <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.id_area }}')">
+              <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
+            </button>
+          </div>
+
         </th>
       </tr>
       {% endfor %}
@@ -67,18 +68,26 @@ Admin Area
 
   }
 
-  
+
   function modificar(id) {
     location.href = '/modificarAreaBodega/' + id + '/';
   }
 
   {% if messages %}
     {% for message in messages %}
+      {% if message.tags == 'error' %}
         Swal.fire({
-            title: "{{ message.tags }}",
-            text: "{{ message }}",
-            icon: "{{ message.tags }}",
+          title: "{{ message.tags }}",
+          text: "{{ message }}",
+          icon: "error",
         });
+      {% else %}
+        Swal.fire({
+          title: "{{ message.tags }}",
+          text: "{{ message }}",
+          icon: "success",
+        });
+      {% endif %}
     {% endfor %}
   {% endif %}
 </script>

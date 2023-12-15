@@ -15,29 +15,28 @@ Modif. Plan
                 onsubmit="return validarPlan(event)">
                 {% csrf_token %}
                 <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
-                <input class="colum" type="hidden" name="txtId" id="txtId" value="{{planes.id_plan}}">
-               
+                <input class="colum" type="hidden" name="txtId" id="txtId" value="{{planes.id_plan}}">   
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_plan" id="nombre_plan" placeholder="Ingrese nombre plan" autofocus
-                        value="{{planes.nombre_plan}}">
+                        name="nombre_plan" id="nombre_plan" placeholder="Ingrese nombre plan *" autofocus
+                        value="{{planes.nombre_plan}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="costo" id="costo" placeholder="Ingrese costo" autofocus value="{{planes.valor_plan}}">
+                        name="costo" id="costo" placeholder="Ingrese costo *" autofocus value="{{planes.valor_plan}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="cant_anaqueles" id="cant_anaqueles" placeholder="Ingrese cantidad de anaqueles" autofocus
-                        value="{{planes.cant_anaquel_plan}}">
+                        name="cant_anaqueles" id="cant_anaqueles" placeholder="Ingrese cantidad de anaqueles *" autofocus
+                        value="{{planes.cant_anaquel_plan}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="capacidad" id="capacidad" placeholder="Ingrese capacidad m3" autofocus
-                        value="{{planes.capacidad_anaquel}}">
+                        name="capacidad" id="capacidad" placeholder="Ingrese capacidad m3 *" autofocus
+                        value="{{planes.capacidad_anaquel}}" required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectBodega">Selecciona bodega:</label>
+                    <label for="selectBodega">* Selecciona bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectBodega"
                         name="selectBodega">
                         {% for bodega in bodega %}

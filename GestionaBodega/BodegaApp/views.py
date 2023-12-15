@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, date
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from django.db import DatabaseError
 from django.db import IntegrityError
@@ -25,6 +24,8 @@ import re
 from xhtml2pdf import pisa
 from django.http import FileResponse
 from django.template.loader import get_template
+from django.core.files.storage import default_storage
+from django.contrib.auth.decorators import user_passes_test
 
 # Importacion libreria oracle
 import cx_Oracle
@@ -274,29 +275,47 @@ def registrarse(request):
         message = "Error al agregar usuario."
     return render(request, 'web/registrarse.html', {'empresas': empresa, 'sucursales': sucursal, 'error': error, 'exito': exito, 'message': message})
 
+# Verificar en las páginas del admin sea el administrador que entre
+def admin_required(view_func):
+    """
+    Decorador que requiere que el usuario sea un administrador.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.rut == '1111111-1',
+        login_url='login'
+    )
+    if view_func:
+        return actual_decorator(view_func)
+    return actual_decorator
+
 @login_required(login_url='/')
+@admin_required
 def menuAdm(request):
     return render(request,'Admin/menuAdmin.html')
 
 @login_required(login_url='/')
+@admin_required
 def admPerfiles(request):
     perfiles = TipoColaborador.objects.all()
     contexto = {"perfiles": perfiles}
     return render(request,'Admin/Menu/adminPerfile.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admArea(request):
     areas = AreaBodega.objects.all()
     contexto = {"areas": areas}
     return render(request,'Admin/Menu/adminArea.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admBodega(request):
     bodegas = Bodega.objects.all()
     contexto = {"bodegas": bodegas}
     return render(request,'Admin/Menu/adminBodega.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admCliente(request):
     regis = Usuario.objects.filter(id_usuario=1) 
     empl = Colaborador.objects.all()
@@ -306,6 +325,7 @@ def admCliente(request):
     return render(request,'Admin/Menu/adminCliente.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admColaborador(request):
     regis = Usuario.objects.filter(id_usuario=2) 
     empl = Colaborador.objects.all()
@@ -315,24 +335,28 @@ def admColaborador(request):
     return render(request,'Admin/Menu/adminColaborador.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admEmpresa(request):
     empresas = Empresa.objects.all()
     contexto = {"empresas": empresas}
     return render(request,'Admin/Menu/adminEmpresa.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admPlan(request):
     planes = Plan.objects.all()
     contexto = {"planes": planes}
     return render(request,'Admin/Menu/adminPlan.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admProducto(request):
     productos = Producto.objects.all()
     contexto = {'productos': productos}
     return render(request,'Admin/Menu/adminProducto.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def admSucursal(request):
     sucursales = Sucursal.objects.all()
     contexto = {"sucursales": sucursales}
@@ -343,9 +367,14 @@ def plan(request):
     planes = DetallePlan.objects.select_related('id_plan','id_bodega').all()
     usuario = request.user
     rut = usuario.rut
-    plan_contratado = Pago.objects.filter(rut=rut).values_list('id_plan', flat=True)
-    detalle_planes_contratados = DetallePlan.objects.filter(id_plan__in=plan_contratado, id_bodega=usuario.id_bodega).values_list('id_plan', flat = True)
-    detalle_planes_contratados_bodega = DetallePlan.objects.filter(id_plan__in=plan_contratado, id_bodega=usuario.id_bodega).values_list('id_bodega', flat = True)
+
+    plan_contratado = Pago.objects.filter(rut=rut).values_list('id_plan', flat=True).order_by('-fecha_pago').first() #flat=True
+    detalle_planes_contratados = DetallePlan.objects.filter(id_plan=plan_contratado, id_bodega=usuario.id_bodega).values_list('id_plan', flat=True)
+    detalle_planes_contratados_bodega = DetallePlan.objects.filter(id_plan=plan_contratado, id_bodega=usuario.id_bodega).values_list('id_bodega', flat=True)
+
+    #plan.id_plan.id_plan in detalle_planes_contratados and plan.id_bodega.id_bodega in detalle_planes_contratados_bodega
+
+    #'detalle_planes_contratados': detalle_planes_contratados, 'detalle_planes_contratados_bodega': detalle_planes_contratados_bodega
 
     context = {'planes':planes, 'detalle_planes_contratados': detalle_planes_contratados, 'detalle_planes_contratados_bodega': detalle_planes_contratados_bodega}
     return render(request,'web/plan.html',context)
@@ -357,7 +386,7 @@ def despacho(request,):
     bodega = user.id_bodega_id
 
     tipo_usuario = user.id_usuario_id
-    despachos = Despacho.objects.select_related('rut__id_sucursal','id_producto__id_area__id_bodega').filter(Q(rut=rut))
+    despachos = Despacho.objects.select_related('rut__id_sucursal','id_producto__id_area__id_bodega').filter(Q(rut=rut) & Q(id_producto__id_area__id_bodega=bodega))
     despachos_colab = Despacho.objects.select_related('rut__id_sucursal','id_producto__id_area__id_bodega').filter(id_producto__id_area__id_bodega=bodega)
 
     if tipo_usuario == 1:
@@ -396,7 +425,7 @@ def perfil(request):
     id_bodega = user.id_bodega_id
 
     perfiles = Usuario.objects.select_related('perfil').filter(rut=rut)
-    plan_contratado = Pago.objects.select_related('id_plan').filter(rut=rut)
+    plan_contratado = Pago.objects.filter(rut=rut).order_by('-fecha_pago').first()
     bodega = Bodega.objects.filter(id_bodega=id_bodega)
 
     notificacion = Perfil.objects.filter(rut=rut)
@@ -423,7 +452,7 @@ def registrarProducto(request):
 
     if request.method == 'POST':
         nombre_producto = request.POST.get("nombre_producto").lower()
-        stock = request.POST.get("stock")
+        stock = int(request.POST.get("stock"))
         rut_cliente = request.POST.get("rut")
         id_area = request.POST.get("id_area")
         foto = request.FILES.get("foto_prod")
@@ -438,7 +467,7 @@ def registrarProducto(request):
             elif stock == "":
                 errorProd = True
                 error_message = "Debe ingresar el stock" 
-            
+
             elif rut_cliente == "":
                 errorProd = True
                 error_message = "Debe seleccionar un cliente" 
@@ -451,6 +480,14 @@ def registrarProducto(request):
                 errorProd = True
                 error_message = "El producto ya existe para este usuario." 
 
+            elif stock == 0:
+                errorProd = True
+                error_message = "El stock no puede ser igual a 0"
+
+            elif stock < 0:
+                errorProd = True
+                error_message = "El stock no puede contener números negativos" 
+
             else:
                 if not foto:
                     foto = 'producto/foto_pred.jpg'
@@ -458,7 +495,6 @@ def registrarProducto(request):
                 area_bodega = AreaBodega.objects.get(id_area=id_area)
                 cliente = Cliente.objects.get(rut=rut_cliente)
             
-                
                 producto = Producto(nombre_producto=nombre_producto, stock=stock, foto_prod=foto, id_area=area_bodega, rut=cliente)
                 producto.save()
                 exitoProd = True
@@ -500,7 +536,7 @@ def modificar_prod(request, id_producto):
 
     if request.method == "POST":
         nombre_prod = request.POST.get("nombre_producto")
-        stock = request.POST.get("stock")
+        stock = int(request.POST.get("stock"))
         area = request.POST.get("id_area")
         rut = request.POST.get("rut")
         foto = request.FILES.get("foto_prod")
@@ -528,16 +564,27 @@ def modificar_prod(request, id_producto):
             elif producto_existente:
                 errorProd = True
                 error_message = "El producto ya existe para este usuario." 
+
+            elif stock == 0:
+                errorProd = True
+                error_message = "El stock no puede ser igual a 0"
+
+            elif stock < 0:
+                errorProd = True
+                error_message = "El stock no puede contener números negativos" 
+
             else:
                 if not foto:
                     foto = producto.foto_prod
+                else:
+                    default_storage.delete(producto.foto_prod.name)
+                    producto.foto_prod = foto
                 
                 area_bodega = AreaBodega.objects.get(id_area=area)
                 cliente = Cliente.objects.get(rut=rut)
                 
                 producto.nombre_producto = nombre_prod
                 producto.stock = stock
-                producto.foto_prod = foto
                 producto.id_area = area_bodega
                 producto.rut = cliente
                 
@@ -570,14 +617,25 @@ def modificar_prod(request, id_producto):
 
 @login_required(login_url='/')
 def eliminarProducto(request, id_producto):
+    eliminarProd = False
+    exito_message = ''
+    error_message = ''
+
     try:
         productoDelete = Producto.objects.get(id_producto=id_producto)
-        productoDelete.delete()
-        messages.success(request, 'Producto eliminado exitosamente')
-    except ObjectDoesNotExist:
-        messages.error(request, 'No se puede eliminar el producto seleccionado.')
+        if productoDelete.foto_prod != 'producto/foto_pred.jpg':
+            default_storage.delete(productoDelete.foto_prod.name)
 
-    return redirect('PROD')
+        productoDelete.delete()
+        eliminarProd =  True
+        exito_message = 'Producto Eliminado con exito'
+    except ObjectDoesNotExist:
+        error_message = 'Producto no eliminado'
+
+    if eliminarProd:
+        return JsonResponse({'status': 'success', 'exito_message': exito_message})
+    else:
+        return JsonResponse({'status': 'error', 'error_message': error_message})
 
 # Buscar Producto
 @login_required(login_url='/')
@@ -602,18 +660,15 @@ def buscar_producto(request):
 
 login_required(login_url='/')
 def despachar(request):
-    errorProd = False
-    exitoDesp = False
+    exitoDespacho = False
     error_message = ""
     exito_message = ""
 
-    user = request.user
-    tipo_usuario = user.id_usuario_id
-
     if request.method == "POST":
-        id_producto = request.POST['id_prod']
-        rut_cliente = request.POST['rut_cli']
-        id_producto = request.POST['id_producto']
+        cantidad_despachar = int(request.POST.get('cantidad_despachar'))
+        id_producto = request.POST.get('id_producto')
+        rut_cliente = request.POST.get('rut')
+        
 
         producto = Producto.objects.get(id_producto=id_producto)
         despacho = Despacho.objects.filter(id_producto=id_producto).first()
@@ -621,36 +676,34 @@ def despachar(request):
 
         estado = 'S'
         tiempo_entrega = 60  
-        
 
-        if despacho == id_producto:
-            errorProd =  True
-            error_message = "El producto ya ha sido despachado"
-        elif producto.stock == 0:
-            errorProd =  True
+        if producto.stock == 0:
             error_message = "El producto sin stock"
+
+        elif cantidad_despachar > producto.stock:
+            error_message = "La cantidad a despachar supera el stock disponible"
+
+        elif cantidad_despachar == 0:
+            error_message = "La cantidad a despachar no puede ser 0"
+            
+        elif cantidad_despachar < 0:
+            error_message = "La cantidad a despachar debe ser mayor que 0" 
+
         else:
-            despacho = Despacho(estado=estado, tiempo_entrega=tiempo_entrega, id_producto=producto, rut=cliente)
-            exitoDesp = True
+            despacho = Despacho(estado=estado, tiempo_entrega=tiempo_entrega, id_producto=producto, cant_despachada=cantidad_despachar, rut=cliente)
+            exitoDespacho = True
             exito_message = "Producto Despachado"
-            producto.stock = 0
+            cantidad_despachar = int(cantidad_despachar)
+            producto.stock = producto.stock - cantidad_despachar
             despacho.save()
             producto.save()
-
-    if tipo_usuario == 1:
-        template_name = 'web/base.html'
     else:
-        template_name = 'jefe_bodega/base_jefe.html'
-        
-    contexto = {
-       'errorProd':errorProd,
-       'exitoDesp':exitoDesp,
-       'error_message':error_message,
-       'exito_message':exito_message,
-       'template_name':template_name
-    }
+        error_message = "A ocurrido un error inesperado"
 
-    return render (request,'web/producto.html',contexto)
+    if exitoDespacho:
+        return JsonResponse({'status': 'success', 'exito_message': exito_message})
+    else:
+        return JsonResponse({'status': 'error', 'error_message': error_message})
 
 @login_required(login_url='/')
 def buscar_despacho(request):
@@ -682,6 +735,7 @@ def cargar_sucursales(request):
     return JsonResponse(sucursal_data, safe=False)
 
 @login_required(login_url='/')
+@admin_required
 def agrePerfil(request):
     regis = TipoColaborador.objects.all()
     contexto = {"categorias": regis}
@@ -701,6 +755,7 @@ def agrePerfil(request):
     return render(request, 'Admin/Agregar/agregarPerfil.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifPerfil(request, id_tp_colab):
     try:
         perfil = TipoColaborador.objects.get(pk=id_tp_colab)
@@ -724,6 +779,7 @@ def modifPerfil(request, id_tp_colab):
         return render(request, 'Admin/error.html', {"mensaje": "El perfil no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def eliminarPerfil(request, id_tp_colab):
     try:
         perfilDelete = TipoColaborador.objects.get(id_tp_colab=id_tp_colab)
@@ -735,6 +791,7 @@ def eliminarPerfil(request, id_tp_colab):
     return redirect('ADMPERFILES')
 
 @login_required(login_url='/')
+@admin_required
 def agreProducto(request):
     regis = Producto.objects.all()
     clientes = Usuario.objects.filter(id_usuario=1)
@@ -763,6 +820,7 @@ def agreProducto(request):
     return render(request, 'Admin/Agregar/agregarProducto.html',contexto)
 
 @login_required(login_url='/')
+@admin_required
 def agreEmpresa(request):
     regis = Empresa.objects.all()
     contexto = {"categorias": regis}
@@ -772,17 +830,22 @@ def agreEmpresa(request):
         nombre_empresa = request.POST.get("nombre_empresa")
         descripcion = request.POST.get("descrip_emp")
 
-        try:
-            empresa = Empresa(rut_empresa=rut_empresa,nombre_empresa=nombre_empresa,descripcion=descripcion)
-            empresa.save()
-            return redirect('ADMEMPRESA') 
-        except IntegrityError as e:
-            # Si se produce una excepción de IntegrityError, puedes manejarla aquí
-            contexto["mensaje"] = "Error al guardar."
+        # Verificar si el RUT ya existe
+        if Empresa.objects.filter(rut_empresa=rut_empresa).exists():
+            contexto["mensaje"] = "El RUT ya existe."
+        else:
+            try:
+                empresa = Empresa(
+                    rut_empresa=rut_empresa, nombre_empresa=nombre_empresa, descripcion=descripcion)
+                empresa.save()
+                return redirect('ADMEMPRESA')
+            except IntegrityError as e:
+                contexto["mensaje"] = "Error al guardar la empresa."
 
-    return render(request,'Admin/Agregar/agregarEmpresa.html')
+    return render(request, 'Admin/Agregar/agregarEmpresa.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def eliminarEmpresa(request, rut_empresa):
     try:
         empresaDelete = Empresa.objects.get(rut_empresa=rut_empresa)
@@ -794,6 +857,7 @@ def eliminarEmpresa(request, rut_empresa):
     return redirect('ADMEMPRESA')
 
 @login_required(login_url='/')
+@admin_required
 def agrePlan(request):
     regis = Plan.objects.all()
     bodegas = Bodega.objects.all()
@@ -825,6 +889,7 @@ def agrePlan(request):
     return render(request, 'Admin/Agregar/agregarPlan.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifPlan(request, plan_id):
     try:
         plan = Plan.objects.get(pk=plan_id)
@@ -853,6 +918,7 @@ def modifPlan(request, plan_id):
         return render(request, 'Admin/error.html', {"mensaje": "El plan no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def eliminarPlan(request, id_plan):
     try:
         planDelete = Plan.objects.get(id_plan=id_plan)
@@ -866,6 +932,7 @@ def eliminarPlan(request, id_plan):
     return redirect('ADMPLAN')
 
 @login_required(login_url='/')
+@admin_required
 def agreSucursal(request):
     regis = Sucursal.objects.all()
     empresas = Empresa.objects.all()
@@ -888,6 +955,7 @@ def agreSucursal(request):
     return render(request, 'Admin/Agregar/agregarSucursal.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def eliminarSucursal(request, id_sucursal):
     try:
         sucursalDelete = Sucursal.objects.get(id_sucursal=id_sucursal)
@@ -899,6 +967,7 @@ def eliminarSucursal(request, id_sucursal):
     return redirect('ADMSUCRUSAL')
 
 @login_required(login_url='/')
+@admin_required
 def agreCliente(request):
     regis = Usuario.objects.all()
     cli = Cliente.objects.all()
@@ -921,6 +990,7 @@ def agreCliente(request):
         apellido_paterno = request.POST.get("ap_apellido_cli")
         apellido_materno = request.POST.get("am_apellido_cli")
         correo = request.POST.get("mail_cli")
+        hoy = date.today()
 
         # Verificar si el correo ya existe en la base de datos
         if Usuario.objects.filter(correo=correo).exists():
@@ -945,6 +1015,8 @@ def agreCliente(request):
         id_sucursal = request.POST.get("selectSucursal")
         id_bodega = request.POST.get("selectBodega")
         id_usuario = request.POST.get("txtId")
+
+        edad_cli = hoy.year - fecha.year
 
         # Validación y procesamiento de los datos, similar al código anterior
 
@@ -972,6 +1044,13 @@ def agreCliente(request):
             )
             nuevo_cliente.save()
 
+            nuevo_perfil = Perfil(
+                edad = edad_cli,
+                rut = nuevo_usuario
+            )
+
+            nuevo_perfil.save()
+
             return redirect('ADMCLIENTE')
 
         except DatabaseError as e:
@@ -980,6 +1059,7 @@ def agreCliente(request):
     return render(request, 'Admin/Agregar/agregarCliente.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def eliminarCliente(request,rut):
     try:
         usuario = Usuario.objects.get(rut=rut)
@@ -993,6 +1073,7 @@ def eliminarCliente(request,rut):
     return redirect('ADMCLIENTE')
 
 @login_required(login_url='/')
+@admin_required
 def modifCliente(request, rut):
     try:
         usuario_existente = Usuario.objects.get(pk=rut)
@@ -1005,7 +1086,6 @@ def modifCliente(request, rut):
             segundo_nombre = request.POST.get("s_nombre_cli")
             apellido_paterno = request.POST.get("ap_apellido_cli")
             apellido_materno = request.POST.get("am_apellido_cli")
-            contrasena = request.POST.get("pass_emp")
             id_sucursal = request.POST.get("selectSucursal")
             id_bodega = request.POST.get("selectBodega")
             id_usuario = request.POST.get("txtId")
@@ -1019,10 +1099,6 @@ def modifCliente(request, rut):
             usuario_existente.correo = correo
             usuario_existente.id_bodega = Bodega.objects.get(id_bodega=id_bodega)
             usuario_existente.id_usuario_id = id_usuario
-
-            # Actualiza la contraseña solo si se proporciona una nueva contraseña
-            if contrasena:
-                usuario_existente.set_password(contrasena)
 
             usuario_existente.save()
 
@@ -1043,6 +1119,7 @@ def modifCliente(request, rut):
         return render(request, 'Admin/error.html', {"mensaje": "El cliente no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def agreBodega(request):
     regis = Bodega.objects.all()
     tipoBodegas = TipoBodega.objects.all()
@@ -1065,6 +1142,7 @@ def agreBodega(request):
     return render(request, 'Admin/Agregar/agregarBodega.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 @transaction.atomic
 def eliminarBodega(request, id_bodega):
     try:
@@ -1087,6 +1165,7 @@ def eliminarBodega(request, id_bodega):
     return redirect('ADMBODEGA')
 
 @login_required(login_url='/')
+@admin_required
 def agreAreaBodega(request):
     regis = AreaBodega.objects.all()
     bodegas = Bodega.objects.all()
@@ -1110,6 +1189,7 @@ def agreAreaBodega(request):
     return render(request, 'Admin/Agregar/agregarAreaBodega.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def eliminarArea(request, id_area):
     try:
         bodegaDelete = AreaBodega.objects.get(id_area=id_area)
@@ -1121,6 +1201,7 @@ def eliminarArea(request, id_area):
     return redirect('ADMAREA')
 
 @login_required(login_url='/')
+@admin_required
 def agreEmpleado(request):
     regis = Usuario.objects.all()
     empl = Colaborador.objects.all()
@@ -1181,6 +1262,7 @@ def agreEmpleado(request):
     return render(request, 'Admin/Agregar/agregarEmpleado.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def eliminarEmpleado(request,rut):
     try:
         usuario = Usuario.objects.get(rut=rut)
@@ -1194,6 +1276,7 @@ def eliminarEmpleado(request,rut):
     return redirect('ADMCOLABORADOR')
 
 @login_required(login_url='/')
+@admin_required
 def modPerfil(request, id_tp_colab):
     modPerfil = TipoColaborador.objects.get(id_tp_colab=id_tp_colab)
     contexto = {"perfiles": modPerfil}
@@ -1201,12 +1284,14 @@ def modPerfil(request, id_tp_colab):
     return render(request,'Admin/Modificar/modificarPerfil.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modEmpresa(request, rut_empresa):
     modEmpresa = Empresa.objects.get(rut_empresa=rut_empresa)
     contexto = {"empresas": modEmpresa}
     return render(request,'Admin/Modificar/modificarEmpresa.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifEmpresa(request, rut_empresa):
     try:
         empresa = Empresa.objects.get(pk= rut_empresa)
@@ -1231,6 +1316,7 @@ def modifEmpresa(request, rut_empresa):
         return render(request, 'Admin/error.html', {"mensaje": "La empresa no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def modBodega(request, id_bodega):
     modBodega = Bodega.objects.get( id_bodega= id_bodega)
     modTPBodega = TipoBodega.objects.all()
@@ -1238,6 +1324,7 @@ def modBodega(request, id_bodega):
     return render(request,'Admin/Modificar/modificarBodega.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifBodega(request, id_bodega):
     try:
         bodega = Bodega.objects.get(pk=id_bodega)
@@ -1263,6 +1350,7 @@ def modifBodega(request, id_bodega):
         return render(request, 'Admin/error.html', {"mensaje": "La bodega no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def modAreaBodega(request, id_area):
     modArea = AreaBodega.objects.get(id_area=id_area)
     modBodega = Bodega.objects.all()
@@ -1270,6 +1358,7 @@ def modAreaBodega(request, id_area):
     return render(request,'Admin/Modificar/modificarAreaBodega.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifArea(request, id_area):
     try:
         area = AreaBodega.objects.get(pk=id_area)
@@ -1296,6 +1385,7 @@ def modifArea(request, id_area):
         return render(request, 'Admin/error.html', {"mensaje": "El área bodega no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def modCliente(request, rut):
     usuarioCli = Usuario.objects.filter(rut=rut).first()
     cli = Cliente.objects.all()
@@ -1305,6 +1395,7 @@ def modCliente(request, rut):
     return render(request,'Admin/Modificar/modificarCliente.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modEmpleado(request, rut):
     modEmpl = Usuario.objects.filter(rut=rut).first()
     empl = Colaborador.objects.all()
@@ -1314,6 +1405,7 @@ def modEmpleado(request, rut):
     return render(request,'Admin/Modificar/modificarEmpleado.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifEmpleado(request, rut):
     try:
         usuario_existente = Usuario.objects.get(pk=rut)
@@ -1326,7 +1418,6 @@ def modifEmpleado(request, rut):
             segundo_nombre = request.POST.get("s_nombre_emp")
             apellido_paterno = request.POST.get("ap_apellido_emp")
             apellido_materno = request.POST.get("am_apellido_emp")
-            PASSWORD = request.POST.get("pass_emp")
             id_tp_colab = request.POST.get("selectPerfil")
             id_bodega = request.POST.get("selectBodega")
             id_usuario = request.POST.get("txtId")
@@ -1340,11 +1431,6 @@ def modifEmpleado(request, rut):
             usuario_existente.correo = correo
             usuario_existente.id_bodega = Bodega.objects.get(id_bodega=id_bodega)
             usuario_existente.id_usuario_id = id_usuario
-
-            # Actualiza la contraseña solo si se proporciona una nueva contraseña
-            if PASSWORD:
-                contrasena_encriptada = make_password(PASSWORD)
-                usuario_existente.set_password(contrasena_encriptada)
 
             usuario_existente.save()
 
@@ -1362,6 +1448,7 @@ def modifEmpleado(request, rut):
         return render(request, 'Admin/error.html', {"mensaje": "El empleado no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def modSucursal(request, id_sucursal):
     modSucursal = Sucursal.objects.get(id_sucursal=id_sucursal)
     modEmpresa = Empresa.objects.all()
@@ -1369,6 +1456,7 @@ def modSucursal(request, id_sucursal):
     return render(request,'Admin/Modificar/modificarSucursal.html', contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifSucursal(request, id_sucursal):
     try:
         sucursal = Sucursal.objects.get(pk= id_sucursal)
@@ -1394,6 +1482,7 @@ def modifSucursal(request, id_sucursal):
         return render(request, 'Admin/error.html', {"mensaje": "La sucursal no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def modPlan(request, id_plan):
     modPlan = Plan.objects.get(id_plan=id_plan)
     bodegas = Bodega.objects.all()
@@ -1402,6 +1491,7 @@ def modPlan(request, id_plan):
     return render(request, "Admin/Modificar/modificarPlan.html", contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modProductoAdmin(request, id_producto):
     modProducto = Producto.objects.get(id_producto=id_producto)
     clientes = Usuario.objects.filter(id_usuario=1)
@@ -1410,6 +1500,7 @@ def modProductoAdmin(request, id_producto):
     return render(request, 'Admin/Modificar/modificarProducto.html',contexto)
 
 @login_required(login_url='/')
+@admin_required
 def modifProductoAdmin(request,id_producto):
     try:
         producto = Producto.objects.get(pk=id_producto)
@@ -1448,6 +1539,7 @@ def modifProductoAdmin(request,id_producto):
         return render(request, 'Admin/error.html', {"mensaje": "El perfil no existe"})
 
 @login_required(login_url='/')
+@admin_required
 @transaction.atomic
 def eliminarProductoAdmin(request, id_producto):
     try:
@@ -1488,6 +1580,7 @@ def imprimirRepa(request):
     return render(request,'repartidor/imprimir.html')
 
 @login_required(login_url='/')
+@admin_required
 def modifPerfil(request, id_tp_colab):
     try:
         perfil = TipoColaborador.objects.get(pk=id_tp_colab)
@@ -1511,6 +1604,7 @@ def modifPerfil(request, id_tp_colab):
         return render(request, 'Admin/error.html', {"mensaje": "El perfil no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def modifPlan(request, plan_id):
     try:
         plan = Plan.objects.get(pk=plan_id)
@@ -1547,6 +1641,7 @@ def modifPlan(request, plan_id):
         return render(request, 'Admin/error.html', {"mensaje": "El plan no existe"})
 
 @login_required(login_url='/')
+@admin_required
 def errorMod(request):
     return render(request,'Admin/error.html')
 
@@ -1605,13 +1700,15 @@ def plantillaPdf_ent(request):
 
 @login_required(login_url='/')    
 def plantillaPdf_Desp(request, id_sucursal):
+    user = request.user
+    bodega = user.id_bodega_id
 
-    #productos_colab = Producto.objects.select_related('rutrut','id_area').filter(id_areaid_bodega=id_bodega)
+
     sucursal =  Sucursal.objects.get(id_sucursal=id_sucursal)
-    despachos = Despacho.objects.select_related('rut__id_sucursal','id_producto__id_area__id_bodega','rut__rut__id_bodega').filter(rut__id_sucursal=sucursal)
+    despachos = Despacho.objects.select_related('rut__id_sucursal','id_producto__id_area__id_bodega','rut__rut__id_bodega').filter(Q(rut__id_sucursal=sucursal) & Q(id_producto__id_area__id_bodega=bodega))
 
     # Carga la plantilla HTML
-    template_path = 'repartidor/plantillaDesp_pdf.html'
+    template_path = 'jefe_bodega/plantillaDesp_pdf.html'
     template = get_template(template_path)
 
     # Rellena la plantilla con los datos
@@ -1634,14 +1731,21 @@ def plantillaPdf_Desp(request, id_sucursal):
 
 @login_required(login_url='/')
 def reporte_desp(request):
-    sucursales = Sucursal.objects.all()
     user = request.user
     rut = user.rut
+    bodega = user.id_bodega_id
+
+    #sucursales = Despacho.objects.select_related('rut__id_sucursal','id_producto__id_area__id_bodega').filter(id_producto__id_area__id_bodega=bodega)
+    clientes = Cliente.objects.select_related('id_sucursal').filter(rut__id_bodega=bodega)
+
+    sucursales = Sucursal.objects.filter(id_sucursal__in=[suc.id_sucursal_id for suc in clientes]).distinct()
+
     usu_colab = Colaborador.objects.filter(rut=rut).first()
     if usu_colab.id_tp_colab_id == 1 or usu_colab.id_tp_colab_id == 2:
         template_name = 'jefe_bodega/base_jefe.html'
     else:
         template_name = 'repartidor/baseRepar.html'
+    
     contexto = {'sucursales':sucursales, 'template_name':template_name}
     return render(request, 'jefe_bodega/reportesDespacho.html',contexto)
 

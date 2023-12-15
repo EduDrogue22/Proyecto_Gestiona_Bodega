@@ -41,7 +41,7 @@
 <body>
     <div class="container">
         <h1 class="text-center text-black" style="font-size: 115px;">El <img src="http://127.0.0.1:8000/static/img/logo.png" width="100" height="100">odegón</h1>
-        <p>Listado de Productos</p>
+        <p>Listado de Despachos</p>
 
         <table>
             <thead>
@@ -60,7 +60,7 @@
                     <td>{{desp.get_estado_display}}</td>
                     <td>{{desp.tiempo_entrega}}</td>
                     <td>{{desp.rut.id_sucursal.nombre_sucursal}}</td>
-                    <td>{{ desp.id_producto.nombre_producto}}</td>
+                    <td>{{desp.id_producto.nombre_producto}}</td>
                     <td><img src="http://127.0.0.1:8000/media/{{desp.id_producto.foto_prod}}" style="width: 150px; height: 100px;" class="img-fluid border border-dark"></td>
 
                 </tr>

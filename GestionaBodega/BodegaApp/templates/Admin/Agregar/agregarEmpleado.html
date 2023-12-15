@@ -24,30 +24,30 @@ Agregar Empleado
                 </script>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="p_nombre_emp" id="p_nombre_emp" placeholder="Ingrese primer nombre" autofocus>
+                        name="p_nombre_emp" id="p_nombre_emp" placeholder="Ingrese primer nombre *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="s_nombre_emp" id="s_nombre_emp" placeholder="Ingrese segundo nombre" autofocus>
+                        name="s_nombre_emp" id="s_nombre_emp" placeholder="Ingrese segundo nombre *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="ap_apellido_emp" id="ap_apellido_emp" placeholder="Ingrese apellido paterno" autofocus>
+                        name="ap_apellido_emp" id="ap_apellido_emp" placeholder="Ingrese apellido paterno *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="am_apellido_emp" id="am_apellido_emp" placeholder="Ingrese apellido materno" autofocus>
+                        name="am_apellido_emp" id="am_apellido_emp" placeholder="Ingrese apellido materno *" autofocus>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="rut_emp" id="rut_emp" placeholder="Ingrese su RUT" autofocus>
+                        name="rut_emp" id="rut_emp" placeholder="Ingrese su RUT *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="email" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="mail_emp" id="mail_emp" placeholder="Ingrese correo electrónico" autofocus>
+                        name="mail_emp" id="mail_emp" placeholder="Ingrese correo electrónico *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectPerfil">Seleccione perfil de usuario:</label>
+                    <label for="selectPerfil">* Seleccione perfil de usuario:</label>
                     <select class="form-select" aria-label="Default select example" id="selectPerfil"
                         name="selectPerfil">
                         {% for tpColab in tpColab %}
@@ -56,7 +56,7 @@ Agregar Empleado
                     </select>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectBodega">Selecciona bodega:</label>
+                    <label for="selectBodega">* Selecciona bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectBodega"
                         name="selectBodega">
                         {% for bodega in bodega %}
@@ -66,11 +66,11 @@ Agregar Empleado
                 </div>
                 <div class="mb-2 form-input">
                     <input type="password" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="pass_emp" id="pass_emp" placeholder="Ingrese contraseña" autofocus>
+                        name="pass_emp" id="pass_emp" placeholder="Ingrese contraseña *" autofocus required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="password" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="pass_emp_re" id="pass_emp_re" placeholder="repetir contraseña" autofocus>
+                        name="pass_emp_re" id="pass_emp_re" placeholder="Repetir contraseña *" autofocus required>
                 </div>
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">
                     <a href="{% url 'ADMCOLABORADOR' %}"><button class="btn btn-danger btn-lg me-md-5"

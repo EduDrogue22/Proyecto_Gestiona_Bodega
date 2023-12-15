@@ -17,15 +17,15 @@ Modif. Area Bodega
         <input class="colum" type="hidden" name="txtId" id="txtId" value="{{areaBodega.id_area}}">
         <div class="mb-2 form-input">
           <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="sector_area"
-            id="sector_area" placeholder="Ingrese nombre sector" autofocus value="{{areaBodega.sector}}">
+            id="sector_area" placeholder="Ingrese nombre sector *" autofocus value="{{areaBodega.sector}} " required>
         </div>
         <div class="mb-2 form-input">
           <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-            name="anaqueles_area" id="anaqueles_area" placeholder="Ingrese cantidad de anaqueles" autofocus
-            value="{{areaBodega.cant_anaq_area}}">
+            name="anaqueles_area" id="anaqueles_area" placeholder="Ingrese cantidad de anaqueles *" autofocus
+            value="{{areaBodega.cant_anaq_area}}" required>
         </div>
         <div class="mb-2 form-input">
-          <label for="selectBodega">Selecciona una bodega:</label>
+          <label for="selectBodega">* Selecciona una bodega:</label>
           <select class="form-select" aria-label="Default select example" id="selectBodega" name="selectBodega">
             {% for bodega in bodega %}
             {% if areaBodega.id_bodega.nombre_bodega == bodega.nombre_bodega %}

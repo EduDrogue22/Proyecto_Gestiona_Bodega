@@ -16,37 +16,37 @@ Modif. Empleado
                 {% csrf_token %}
                 <div class="mb-2 form-input">
                     <input type="hidden" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="rut_emp" id="rut_emp" placeholder="Ingrese su RUT" autofocus
-                        value="{{usuarioEmp.rut}}">
+                        name="rut_emp" id="rut_emp" placeholder="Ingrese su RUT *" autofocus
+                        value="{{usuarioEmp.rut}}" required>
                 </div>
                 <div id="mensaje-error" style="color: red;">{{ mensaje }}</div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="p_nombre_emp" id="p_nombre_emp" placeholder="Ingrese primer nombre" autofocus
-                        value="{{usuarioEmp.primer_nombre}}">
+                        name="p_nombre_emp" id="p_nombre_emp" placeholder="Ingrese primer nombre *" autofocus
+                        value="{{usuarioEmp.primer_nombre}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="s_nombre_emp" id="s_nombre_emp" placeholder="Ingrese segundo nombre" autofocus
-                        value="{{ usuarioEmp.segundo_nombre }}">
+                        name="s_nombre_emp" id="s_nombre_emp" placeholder="Ingrese segundo nombre " autofocus
+                        value="{{ usuarioEmp.segundo_nombre }}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="ap_apellido_emp" id="ap_apellido_emp" placeholder="Ingrese apellido paterno" autofocus
-                        value="{{ usuarioEmp.apellido_paterno }}">
+                        name="ap_apellido_emp" id="ap_apellido_emp" placeholder="Ingrese apellido paterno *" autofocus
+                        value="{{ usuarioEmp.apellido_paterno }}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="am_apellido_emp" id="am_apellido_emp" placeholder="Ingrese apellido materno" autofocus
-                        value="{{ usuarioEmp.apellido_materno }}">
+                        name="am_apellido_emp" id="am_apellido_emp" placeholder="Ingrese apellido materno*" autofocus
+                        value="{{ usuarioEmp.apellido_materno }}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="email" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="mail_emp" id="mail_emp" placeholder="Ingrese correo electrónico" autofocus
-                        value="{{ usuarioEmp.correo }}">
+                        name="mail_emp" id="mail_emp" placeholder="Ingrese correo electrónico *" autofocus
+                        value="{{ usuarioEmp.correo }}" required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectPerfil">Seleccione perfil de usuario:</label>
+                    <label for="selectPerfil">* Seleccione perfil de usuario:</label>
                     <select class="form-select" aria-label="Default select example" id="selectPerfil"
                         name="selectPerfil">
                         {% for tpColab in tpColab %}
@@ -59,7 +59,7 @@ Modif. Empleado
                     </select>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectBodega">Selecciona bodega:</label>
+                    <label for="selectBodega">* Selecciona bodega:</label>
                     <select class="form-select" aria-label="Default select example" id="selectBodega"
                         name="selectBodega">
                         {% for bodega in bodega %}
@@ -73,12 +73,12 @@ Modif. Empleado
                 </div>
                 <div class="mb-2 form-input">
                     <input type="hidden" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="pass_emp" id="pass_emp" placeholder="Ingrese contraseña" autofocus
+                        name="pass_emp" id="pass_emp" placeholder="Ingrese contraseña *" autofocus
                         value="{{ usuarioEmp.password }}">
                 </div>
                 <div class="mb-2 form-input">
                     <input type="hidden" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="pass_emp_re" id="pass_emp_re" placeholder="repetir contraseña" autofocus
+                        name="pass_emp_re" id="pass_emp_re" placeholder="Repetir contraseña *" autofocus
                         value="{{ usuarioEmp.password }}">
                 </div>
                 <div class="d-grid gap-5 d-md-flex justify-content-md-center" style="padding-top: 15%;">

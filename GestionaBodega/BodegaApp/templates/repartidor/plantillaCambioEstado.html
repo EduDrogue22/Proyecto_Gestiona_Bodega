@@ -21,7 +21,13 @@ Cambiar Estado
                         name="nombre_producto" id="nombre_producto" autofocus readonly
                         value="{{despacho.id_producto.nombre_producto}}">
                 </div>
-                <label for="rut_cli">RUT Cliente:</label>
+                <label for="nombre_producto">Cantidad Producto Despachada:</label>
+                <div class="mb-2 form-input nombre">
+                    <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
+                        name="nombre_producto" id="nombre_producto" autofocus readonly
+                        value="{{despacho.cant_despachada}}">
+                </div>
+                <label for="rut_cli">RUT Representante:</label>
                 <div class="mb-2 form-input nombre">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
                         name="rut_cli" id="rut_cli" autofocus readonly value="{{despacho.rut.rut.rut}}">

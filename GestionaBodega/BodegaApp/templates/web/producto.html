@@ -61,7 +61,7 @@ Producto
     {% for prod in productos %}
     
     <form action="{% url 'DESPA' %}" method="POST" class="mb-3">
-        <div class="row border border-dark align-items-center" style="background: #D9D9D9;">
+        <div class="row border border-dark align-items-center" id="card_prod">
             {% csrf_token %}
 
 
@@ -97,10 +97,9 @@ Producto
 
             <!-- Botón Despachar -->
             <div class="col-12 col-md-2 text-center d-flex align-items-center justify-content-center">
-                <input type="hidden" name="id_prod" value="{{ prod.id_producto }}">
-                <input type="hidden" name="rut_cli" value="{{ prod.rut_id}}">
-                <input type="hidden" name="id_producto" value="{{ prod.id_producto}}">
-                <button type="submit" class="btn fw-bold text-white mb-2 border-dark mb-3 border-2 rounded-0"
+                <input type="hidden" id="rut_cli_{{ prod.id_producto }}" value="{{ prod.rut.rut.rut }}">
+                <input type="hidden" id="id_prod_{{ prod.id_producto }}" value="{{ prod.id_producto }}">
+                <button type="button" class="btn fw-bold text-white mb-2 border-dark mb-3 border-2 rounded-0" onclick="exitoDespacho('{{ prod.id_producto }}')"
                     style="background-color: #957755;">
                     <img src="/static/img/caja_despachar.png" alt="Icono"
                         style="width: 30px; height: 30px; margin-right: 5px;">
@@ -115,7 +114,7 @@ Producto
     {% else %}
     {% for prodc in productos_colab %}
     <form action="{% url 'DESPA' %}" method="POST" class="mb-3">
-        <div class="row border border-dark align-items-center" style="background: #D9D9D9;">
+        <div class="row border border-dark align-items-center" id="card_prod">
             {% csrf_token %}
 
 
@@ -143,11 +142,11 @@ Producto
             </div>
 
             <div class="col-12 col-md-2 text-center">
-                <p>Nombre Cliente</p>
+                <p>Nombre Representante</p>
                 <p class="fs-3 fw-bold">{{prodc.rut.rut.primer_nombre|capfirst}} {{prodc.rut.rut.apellido_paterno|capfirst}}</p>
             </div> 
             <div class="col-md-2 text-center">
-                <button class="btn btn-danger " type="button" onclick="eliminarProd('{{ prodc.nombre_producto }}','{{ prodc.id_producto}}' )"> 
+                <button class="btn btn-danger " type="button" onclick="eliminarProd('{{ prodc.nombre_producto }}','{{ prodc.id_producto}}','{{exito_message}}' )"> 
                     <img src="{% static 'img/icon/trash.png' %}" style="max-width: 90%;">
                     Eliminar
                 </button>
@@ -174,31 +173,8 @@ Producto
 <script>
     exitoProd("{{ exito_message }}","{{title}}");
 </script>
-{% elif exitoDesp %}
-<script>
-    exitoDesp("{{ exito_message }}");
-</script>
-{% endif %}
-<script>
-    function eliminarProd(nombre_prod, id) {
-        Swal.fire({
-        title: 'Desea eliminar el producto ' + nombre_prod + '?',
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-            location.href = '/eliminar_producto/' + id + '/';
-            Swal.fire({
-                icon: 'success',
-                title: 'Producto Eliminado',
-                text: message,
-                showConfirmButton: false,
-                timer: 2500
-            })
-        }
-        })
 
-    }
-</script>
+
+{% endif %}
+
 {% endblock %}

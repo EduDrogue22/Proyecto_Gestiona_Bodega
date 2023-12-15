@@ -6,7 +6,7 @@ Modif. Producto
 {% block content %}
 <div style="padding: 4%;"></div>
 <div style="text-align: center; color: aliceblue;">
-    <h1>Agregar Producto</h1>
+    <h1>Modificar Producto</h1>
 </div>
 <section class="d-flex justify-content-center " id="formulario">
     <div class="card col-sm-6 p-3" style="background-color: gray;">
@@ -27,28 +27,28 @@ Modif. Producto
                 <input class="colum" type="hidden" name="txtId" id="txtId" value="{{producto.id_producto}}">
                 <div class="mb-2 form-input">
                     <input type="text" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto" autofocus
-                        value="{{producto.nombre_producto}}">
+                        name="nombre_pro" id="nombre_pro" placeholder="Ingrese nombre producto *" autofocus
+                        value="{{producto.nombre_producto}}" required>
                 </div>
                 <div class="mb-2 form-input">
                     <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-                        name="stock" id="stock" placeholder="Ingrese stock" autofocus value="{{producto.stock}}">
+                        name="stock" id="stock" placeholder="Ingrese stock *" autofocus value="{{producto.stock}}" required>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectCliente">Seleccione un cliente:</label>
+                    <label for="selectCliente">* Seleccione un representante de la empresa cliente:</label>
                     <select class="form-select" aria-label="Default select example" id="selectCliente"
                         name="selectCliente">
                         {% for nom in clientes %}
                         {% if nom.rut|lower == producto.rut.rut.rut|lower %}
-                        <option value="{{nom.rut}}" selected>{{nom.primer_nombre}} {{nom.apellido_paterno}}</option>
+                        <option value="{{nom.rut}}" selected>{{nom.primer_nombre}} {{nom.apellido_paterno}} - {{nom.cliente.id_sucursal.rut_empresa.nombre_empresa}}</option>
                         {% else %}
-                        <option value="{{nom.rut}}">{{nom.primer_nombre}} {{nom.apellido_paterno}}</option>
+                        <option value="{{nom.rut}}">{{nom.primer_nombre}} {{nom.apellido_paterno}} - {{nom.cliente.id_sucursal.rut_empresa.nombre_empresa}}</option>
                         {% endif %}
                         {% endfor %}
                     </select>
                 </div>
                 <div class="mb-2 form-input">
-                    <label for="selectSector">Selecciona un sector:</label>
+                    <label for="selectSector">* Selecciona un sector:</label>
                     <select class="form-select" aria-label="Default select example" id="selectSector"
                         name="selectSector">
                         {% for area in areas %}

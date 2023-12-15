@@ -51,6 +51,7 @@ class Despacho(models.Model):
     id_despacho = models.AutoField(primary_key=True)
     estado = models.CharField(max_length=1, choices=ESTADO_CHOICES)
     tiempo_entrega = models.IntegerField()
+    cant_despachada = models.IntegerField()
     id_producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, null = True, blank = True, db_column='id_producto')
     rut = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null = True, blank = True, db_column='rut')
 

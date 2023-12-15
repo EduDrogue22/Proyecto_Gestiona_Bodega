@@ -15,7 +15,8 @@ Entregas
                 <th>ID</th>
                 <th>Tiempo de entrega (Min.)</th>
                 <th>Producto</th>
-                <th>RUT Ciente</th>
+                <th>Cantidad Despachada</th>
+                <th>RUT Representante</th>
                 <th>Estado</th>
                 <th>Cambiar estado</th>
             </tr>
@@ -25,15 +26,28 @@ Entregas
             <tr>
                 <th>{{reg.id_despacho}}</th>
                 <th>{{reg.tiempo_entrega}}</th>
-                <th>{{reg.id_producto.nombre_producto}}</th>
+                {% if reg.id_producto.nombre_producto %}
+                    <th>{{reg.id_producto.nombre_producto}}</th>
+                {% else %}
+                    <th>Producto Eliminado</th>
+                {% endif %}
+                <th>{{reg.cant_despachada}}</th>
                 <th>{{reg.rut.rut.rut}}</th>
-                <th>{{reg.estado}}</th>
+                <th>{{reg.get_estado_display}}</th>
                 <th>
+                    {% if reg.id_producto.nombre_producto %}
                     <div class="d-grid gap-2 d-md-flex justify-content-md-star">
                         <button class="btn btn-warning" type="button" onclick="modificar('{{ reg.id_despacho }}')">
                             <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
                         </button>
                     </div>
+                    {% else %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-star">
+                        <button class="btn btn-warning" type="button" disabled>
+                            <img src="{% static 'img/icon/update.png' %}" style="max-width: 50%;">
+                        </button>
+                    </div>
+                    {% endif %}
                 </th>
             </tr>
         </tbody>

@@ -66,17 +66,102 @@ function exitoProd(message, title){
       });
 }
 
-function exitoDesp(message, title){
+function eliminarProd(nombre_prod, id) {
     Swal.fire({
-        icon: 'success',
-        title: title,
-        text: message,
-        showConfirmButton: false,
-        timer: 2000
-      }).then(() => {
-          window.location.href = '/despacho';
-        });
-  }
+        title: 'Desea eliminar el producto ' + nombre_prod + '?',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Hacer la solicitud para eliminar el producto
+            fetch('/eliminar_producto/' + id + '/')
+                .then(response => response.json())
+                .then((response) => {
+                    if (response['status'] === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Producto Eliminado',
+                            text: response['exito_message'],
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            // Redirigir después de mostrar el mensaje de éxito
+                            window.location.href = '/producto';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response['error_message'],
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+        }
+    });
+}
+
+// En algún lugar donde procesas la respuesta del servidor
+
+function exitoDespacho(idProducto) {
+    var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    Swal.fire({
+        title: 'Ingrese cantidad de producto a despachar',
+        input: 'text',
+        showCancelButton: true,
+        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Aceptar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let cantidadDespachar = result.value;
+            let rutcli = document.getElementById("rut_cli_" + idProducto).value;
+
+            console.log("Valor de id_producto antes de la solicitud AJAX:", idProducto);
+
+
+            $.ajax({
+                url: '/despachar/',  // Reemplaza con la ruta correcta
+                type: 'POST',
+                data: {
+                    cantidad_despachar: cantidadDespachar,
+                    id_producto: idProducto,
+                    rut: rutcli,
+                    csrfmiddlewaretoken: csrftoken,  // Necesario para la protección CSRF
+                },
+                
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Producto Despachado',
+                            text: response.exito_message,
+                            showConfirmButton: false,
+                            timer: 2000
+                          }).then(() => {
+                              window.location.href = '/despacho';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error_message,
+                        });
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                    if (error.responseJSON) {
+                        console.log("Respuesta del servidor:", error.responseJSON);
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un problema al despachar el producto.',
+                    });
+                }
+            });
+        }
+    });
+}
 
 // Validar agregar perfil de usuario Admin
 function validarPerfil(event) {

@@ -22,8 +22,8 @@ Plan
     
     <div class="row row-cols-3 mt-3">
         {% for plan in planes %}
-        <div class="col-12 col-md-4 d-flex mt-4" >
-            <div class="col-12 col-md-10 border border-2 border-info" style="background-color: #D9D9D9;">
+        <div class="col-12 col-md-4 d-flex mt-4">
+            <div class="col-12 col-md-10 border border-2 border-info" style="background-color: #D9D9D9;" id="card_prod">
                 <p class="text-center text-light mt-3 fs-4 text-dark">{{plan.id_plan.nombre_plan}}</p>
                 <div class="ms-3 col-11 col-md-11 border border-dark border-2" style="background-color: #FEB75E; height: 400px;">
                     <p class="text-center text-light mt-2 fs-4 text-dark">{{plan.id_plan.valor_plan}}</p>
@@ -57,9 +57,5 @@ Plan
         </div>
         {% endfor %}
     </div>
-    
 </div>
-
-
-
 {% endblock %}

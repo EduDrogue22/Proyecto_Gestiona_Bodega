@@ -1,7 +1,7 @@
 {% extends 'Admin/baseAdmin.html' %}
 {% load static %}
 {% block titulo %}
-Agregar Area Bodega
+Agregar Área Bodega
 {% endblock %}
 {% block content %}
 <div style="padding: 4%;"></div>
@@ -13,7 +13,7 @@ Agregar Area Bodega
     <div class="mb-2">
       <form action="{% url 'AGREAREABODEGA' %}" method="POST" id="form" onsubmit="return validarAreaBodega(event) ">
         {% csrf_token %}
-         <script>
+        <script>
                     {% if mensaje %}
                         Swal.fire({
                             title: 'Error al guardar',
@@ -25,14 +25,14 @@ Agregar Area Bodega
                 </script>
         <div class="mb-2 form-input">
           <input type="text" class="form-control" style="border-radius: 10px; text-align: center;" name="sector_area"
-            id="sector_area" placeholder="Ingrese nombre sector" autofocus>
+            id="sector_area" placeholder="Ingrese nombre sector *" autofocus required>
         </div>
         <div class="mb-2 form-input">
           <input type="number" class="form-control" style="border-radius: 10px; text-align: center;"
-            name="anaqueles_area" id="anaqueles_area" placeholder="Ingrese cantidad de anaqueles" autofocus>
+            name="anaqueles_area" id="anaqueles_area" placeholder="Ingrese cantidad de anaqueles *" autofocus required>
         </div>
         <div class="mb-2 form-input">
-          <label for="selectBodega">Selecciona una bodega:</label>
+          <label for="selectBodega">* Selecciona una bodega:</label>
           <select class="form-select" aria-label="Default select example" id="selectBodega" name="selectBodega">
             {% for bodega in bodegas %}
             <option value="{{ bodega.id_bodega }}">{{ bodega.nombre_bodega }}</option>
